@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "891387532234",
+    "firebase_url": "https://cecs491project.firebaseio.com",
+    "project_id": "cecs491project",
+    "storage_bucket": "cecs491project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891387532234:android:badaa9a1d01e5667",
+        "android_client_info": {
+          "package_name": "cecs491.android.csulb.edu.cecs491project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891387532234-8gil3j3q11bfh27irap5nl3bvif5ekre.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRiCioYxBJSLkRT_0GD0v5tOixb1jTrWs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891387532234-8gil3j3q11bfh27irap5nl3bvif5ekre.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
