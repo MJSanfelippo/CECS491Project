@@ -1,9 +1,11 @@
 package cecs491.android.csulb.edu.cecs491project;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.LoginFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +15,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener{
@@ -40,6 +50,10 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
      */
     private FirebaseAuth firebaseAuth;
 
+    private FirebaseDatabase db;
+
+    private FirebaseUser firebaseUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +69,10 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
         buttonSignIn.setOnClickListener(this);
+
+        db = FirebaseDatabase.getInstance();
+
+
 
     }
 
@@ -86,6 +104,27 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     Toast.makeText(LogInActivity.this, "Signed in successful", Toast.LENGTH_LONG).show();
+
+                    firebaseUser = firebaseAuth.getCurrentUser();
+                    String userId = firebaseUser.getUid();
+                    DatabaseReference ref = db.getReference("Users");
+                    ValueEventListener userListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String userType = dataSnapshot.getValue().toString();
+                            if (userType.equalsIgnoreCase("Employer")){
+                                Intent intent = new Intent(LogInActivity.this, EmployerHomePageActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(LogInActivity.this, EmployeeHomePageActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    };
+                    ref.child(userId).child("User Type").addListenerForSingleValueEvent(userListener); // get the user type of the given user id
                     progressDialog.dismiss();
                 } else {
                     Toast.makeText(LogInActivity.this, "Not successful", Toast.LENGTH_LONG).show();
