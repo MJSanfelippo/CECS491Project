@@ -1,6 +1,7 @@
 package cecs491.android.csulb.edu.cecs491project;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -17,6 +18,10 @@ public class EmployerHomePageActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employer_home_page);
 
-        test = (TextView) findViewById(R.id.employeeTestTextView);
+        test = (TextView) findViewById(R.id.employerTestTextView);
+        Intent i = getIntent();
+        Bundle b = i.getExtras();
+        String firstName = b.getString("firstName");
+        test.setText("Welcome to your home page, " + firstName + "!");
     }
 }
