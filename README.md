@@ -55,3 +55,9 @@ git pull origin master       //this pulls code FROM master TO whatever branch yo
 git push                     //push to your branch
 ```
 * order of operations:   	 add -> commit -> pull -> push
+
+### merge to master branch
+git merge master           
+git checkout master               // goes to master branch
+git merge {your branch}          // merge files in localhost, master should not have any commits ahead
+git push                         // pushes all your branch commits to both branches
