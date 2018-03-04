@@ -8,7 +8,7 @@ Peter Bouris
 
 Lori Bergman
 
-Phanna Chrin
+Phanna Chrin Test
 
 This project is an android application meant to aid a business in scheduling their employees, along with some other cool functionality. This will be fun!
 
@@ -40,9 +40,9 @@ git checkout -b {newbranchname}
 ```
 
 ### when pushing to your branch for the first time
-* must set upstream so that github can track it 
+* must set upstream so that github can track it
 ```
-git push -u origin {branchname}    //you only need the -u argument in your very first push. 
+git push -u origin {branchname}    //you only need the -u argument in your very first push.
 ```
 
 ### pushing to a branch
