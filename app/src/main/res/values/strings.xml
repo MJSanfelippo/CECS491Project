@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">CECS491Project</string>
+    <string name="title_home">Home</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_announcement">Announcement</string>
+    <string name="clockInButton">Clock In</string>
+    <string name="announcmentDisplay">Display Announcemnets</string>
+    <string name="dailyShift">Display Today\'s Shift</string>
 </resources>
