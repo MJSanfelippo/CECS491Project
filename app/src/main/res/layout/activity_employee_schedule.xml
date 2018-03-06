@@ -7,17 +7,6 @@
     tools:context="cecs491.android.csulb.edu.cecs491project.EmployeeScheduleActivity"
     android:id="@+id/relativeLayout">
 
-    <Spinner
-        android:id="@+id/spinnerSchedule"
-        android:layout_width="152dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="204dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/employeeTextView" />
-
     <TextView
         android:id="@+id/employeeTextView"
         android:layout_width="198dp"
@@ -39,10 +28,54 @@
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="8dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/displayedWeekTextView"
+        android:layout_width="172dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/scheduleTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/employeeTextView" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="BACK"
+        app:layout_constraintBottom_toBottomOf="@+id/displayedWeekTextView"
+        app:layout_constraintEnd_toStartOf="@+id/displayedWeekTextView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSchedule" />
+        app:layout_constraintTop_toTopOf="@+id/displayedWeekTextView"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/forwardButton"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:text="FWRD"
+        app:layout_constraintBottom_toBottomOf="@+id/displayedWeekTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/displayedWeekTextView"
+        app:layout_constraintTop_toTopOf="@+id/displayedWeekTextView"
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>
