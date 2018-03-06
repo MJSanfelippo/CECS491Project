@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cecs491.android.csulb.edu.cecs491project">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,8 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EmployeeHomePageActivity"></activity>
-        <activity android:name=".EmployerHomePageActivity"></activity>
+        <activity android:name=".EmployeeHomePageActivity" />
+        <activity android:name=".EmployerHomePageActivity" />
+        <activity android:name=".EmployeeScheduleActivity"></activity>
     </application>
 
 </manifest>
