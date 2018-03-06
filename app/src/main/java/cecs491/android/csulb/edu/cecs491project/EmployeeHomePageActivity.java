@@ -23,5 +23,7 @@ public class EmployeeHomePageActivity extends Activity {
         Bundle b = i.getExtras();
         String firstName = b.getString("firstName");
         test.setText("Welcome to your home page, " + firstName + "!");
+
+
     }
 }

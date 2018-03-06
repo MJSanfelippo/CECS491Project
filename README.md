@@ -10,7 +10,7 @@ Lori Bergman
 
 Phanna Chrin
 
-This project is an android application meant to aid a business in scheduling their employees, along with some other cool functionality.
+This project is an android application meant to aid a business in scheduling their employees, along with some other cool functionality. This will be fun!
 
 The project is implemented in Java and uses Firebase as its backend.
 
@@ -56,4 +56,10 @@ git push                     //push to your branch
 ```
 * order of operations:   	 add -> commit -> pull -> push
 
-----
+### merge to master branch
+```
+git merge master           
+git checkout master               // goes to master branch
+git merge {your branch}          // merge files in localhost, master should not have any commits ahead
+git push                         // pushes all your branch commits to both branches
+```
