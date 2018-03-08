@@ -12,10 +12,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 public class EmployeeScheduleActivity extends AppCompatActivity {
 
@@ -65,36 +65,24 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
         );
 
 
-
-
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        /*
-        Date current = Calendar.getInstance().getTime();
-        Date begin = current;
-        SimpleDateFormat dayOfWeek = new SimpleDateFormat("EEE", Locale.US);
+        Date current = new Date();
+        SimpleDateFormat dayOfWeek = new SimpleDateFormat("MM/dd/yyyy");
+        String formattedDate = dayOfWeek.format(current);
+        displayedWeekTextView.setText(formattedDate);
 
-        while (!dayOfWeek.format(begin).equals("SUN")) {
-            //Date test = new DateTime(current).minusDays(1).toDate();
-            begin = changeDate(begin, -1);
-        }
-
-        Date end = changeDate(begin, 6);
-        SimpleDateFormat proper = new SimpleDateFormat("MM/DD/YYYY", Locale.US);
-        displayedWeekTextView.setText(proper.format(begin) + " - " + proper.format(end));
-        */
-
-    }
-
-    private Date changeDate(Date date, int days) {
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(date);
-        cal.add(Calendar.DATE, days);
-        return cal.getTime();
+        Calendar cal = Calendar.getInstance();
+        int dayOfTheWeek = cal.get(Calendar.DAY_OF_WEEK);
+        cal.add(Calendar.DAY_OF_WEEK, Calendar.SUNDAY - dayOfTheWeek);
+        String lastSunday = dayOfWeek.format(cal.getTime());
+        String thisComingSaturday;
+        cal.add(Calendar.DAY_OF_WEEK, 6);
+        thisComingSaturday = dayOfWeek.format(cal.getTime());
+        displayedWeekTextView.setText(lastSunday + "  -  " + thisComingSaturday);
     }
 }
+
