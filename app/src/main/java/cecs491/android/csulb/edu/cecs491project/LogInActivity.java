@@ -113,16 +113,19 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             String userType = dataSnapshot.child("User Type").getValue().toString();
                             String firstName = dataSnapshot.child("First Name").getValue().toString();
+                            String lastName = dataSnapshot.child("Last Name").getValue().toString();
                             if (userType.equalsIgnoreCase("Employer")){
                                 Intent intent = new Intent(LogInActivity.this, EmployerHomePageActivity.class);
                                 Bundle b = new Bundle();
                                 b.putString("firstName", firstName);
+                                b.putString("lastName", lastName);
                                 intent.putExtras(b);
                                 startActivity(intent);
                             } else {
                                 Intent intent = new Intent(LogInActivity.this, EmployeeHomePageActivity.class);
                                 Bundle b = new Bundle();
                                 b.putString("firstName", firstName);
+                                b.putString("lastName", lastName);
                                 intent.putExtras(b);
                                 startActivity(intent);
                             }
