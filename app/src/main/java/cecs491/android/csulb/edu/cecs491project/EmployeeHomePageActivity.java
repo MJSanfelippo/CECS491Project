@@ -61,7 +61,7 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
 
         mTextMessage = (TextView) findViewById(R.id.employeeTestTextView);
         db = FirebaseDatabase.getInstance();
-        ref = db.getReference("Shifts");
+        ref = db.getReference("cecs491.android.csulb.edu.cecs491project.Shifts");
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
