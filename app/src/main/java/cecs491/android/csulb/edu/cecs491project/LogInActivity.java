@@ -54,6 +54,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseUser firebaseUser;
 
+    public static User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,26 +108,34 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(LogInActivity.this, "Signed in successful", Toast.LENGTH_LONG).show();
 
                     firebaseUser = firebaseAuth.getCurrentUser();
-                    String userId = firebaseUser.getUid();
+                    final String userId = firebaseUser.getUid();
                     DatabaseReference ref = db.getReference("Users");
                     ValueEventListener userListener = new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             String userType = dataSnapshot.child("User Type").getValue().toString();
                             String firstName = dataSnapshot.child("First Name").getValue().toString();
+                            String lastName = dataSnapshot.child("Last Name").getValue().toString();
+                            String email = dataSnapshot.child("Email").getValue().toString();
+                            String phone = dataSnapshot.child("Phone").getValue().toString();
+                            user = new User(email, firstName, lastName, phone, userType, userId);
+                            Intent intent;
                             if (userType.equalsIgnoreCase("Employer")){
-                                Intent intent = new Intent(LogInActivity.this, EmployerHomePageActivity.class);
+                                intent = new Intent(LogInActivity.this, EmployerHomePageActivity.class);
                                 Bundle b = new Bundle();
                                 b.putString("firstName", firstName);
+                                b.putString("lastName", lastName);
                                 intent.putExtras(b);
                                 startActivity(intent);
                             } else {
-                                Intent intent = new Intent(LogInActivity.this, EmployeeHomePageActivity.class);
+                                intent = new Intent(LogInActivity.this, EmployeeHomePageActivity.class);
                                 Bundle b = new Bundle();
                                 b.putString("firstName", firstName);
+                                b.putString("lastName", lastName);
                                 intent.putExtras(b);
                                 startActivity(intent);
                             }
+
                         }
 
                         @Override

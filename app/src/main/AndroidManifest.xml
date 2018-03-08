@@ -18,8 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".EmployeeHomePageActivity" />
         <activity android:name=".EmployerHomePageActivity" />
+
         <activity android:name=".EmployeeScheduleActivity"></activity>
     </application>
 
