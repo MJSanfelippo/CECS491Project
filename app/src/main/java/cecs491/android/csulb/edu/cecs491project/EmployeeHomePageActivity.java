@@ -42,23 +42,23 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
     private DatabaseReference ref;
     private String possibleShiftId;
 
+    public static User user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_home_page);
+        user = LogInActivity.user;
 
         clockInButton = (ToggleButton) findViewById(R.id.toggleClockButton);
         todaysShift = (TextView) findViewById(R.id.DailyShift);
 
-        Intent i = getIntent();
-        Bundle b = i.getExtras();
-        String firstName = b.getString("firstName");
-        String lastName = b.getString("lastName");
         Date d = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddyyyy");
         String today = simpleDateFormat.format(d).toString();
-        possibleShiftId = firstName+lastName+":"+today;
+        possibleShiftId = user.getUid()+"@"+today;
+
         mTextMessage = (TextView) findViewById(R.id.employeeTestTextView);
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("Shifts");
@@ -66,10 +66,13 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(possibleShiftId)){
-                    String startTime = dataSnapshot.child(possibleShiftId).child("Start time").getValue().toString();
-                    String endTime = dataSnapshot.child(possibleShiftId).child("End time").getValue().toString();
+                    String startTime = dataSnapshot.child(possibleShiftId).child("Start Time").getValue().toString();
+                    String endTime = dataSnapshot.child(possibleShiftId).child("End Time").getValue().toString();
                     String shift = startTime + "   to   " + endTime;
-                    clockInButton.setEnabled(true);
+                    String realStartTime = dataSnapshot.child(possibleShiftId).child("Real Start Time").getValue().toString().trim();
+                    if (realStartTime.equalsIgnoreCase("") || realStartTime.equals(null)){
+                        clockInButton.setEnabled(true);
+                    }
                     todaysShift.setText("Today's shift: " + shift + "\n\n" + "Enjoy work today - don't be late!");
                     //Toast.makeText(EmployeeHomePageActivity.this, shift, Toast.LENGTH_LONG).show();
                 } else {

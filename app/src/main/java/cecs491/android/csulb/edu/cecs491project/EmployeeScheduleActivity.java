@@ -10,6 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 
@@ -28,10 +35,34 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
 
     private BottomNavigationView navigation;
 
+    private FirebaseDatabase db;
+    private DatabaseReference ref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_schedule);
+
+        // How to get list of all users
+        /*
+        db = FirebaseDatabase.getInstance();
+        ref = db.getReference("Users");
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot s: dataSnapshot.getChildren()){
+                    Toast.makeText(EmployeeScheduleActivity.this, s.getKey(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        ref.addValueEventListener(valueEventListener);
+        */
 
         employeeNameTextView = (TextView) findViewById(R.id.employeeTextView);
         displayedWeekTextView = (TextView) findViewById(R.id.displayedWeekTextView);
