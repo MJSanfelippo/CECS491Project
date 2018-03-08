@@ -42,6 +42,7 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
     private DatabaseReference ref;
     private String possibleShiftId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
