@@ -59,28 +59,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/breakButton"
         style="@style/Widget.AppCompat.Button.Colored"
+        android:enabled="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="Start Break"
+        android:textOff="Start break"
+        android:textOn="Stop break"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498" />
 
     <ToggleButton
-        android:id="@+id/toggleButton"
+        android:id="@+id/toggleClockButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="114dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="ToggleButton"

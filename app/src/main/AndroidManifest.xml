@@ -19,6 +19,7 @@
         </activity>
         <activity android:name=".EmployeeHomePageActivity"></activity>
         <activity android:name=".EmployerHomePageActivity"></activity>
+        <activity android:name=".EmployeeScheduleActivity"></activity>
     </application>
 
 </manifest>
