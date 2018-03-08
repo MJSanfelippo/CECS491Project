@@ -2,8 +2,12 @@ package cecs491.android.csulb.edu.cecs491project;
 
 import android.content.Intent;
 //import android.icu.text.SimpleDateFormat;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,6 +26,8 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
     private Button backButton;
     private Button forwardButton;
 
+    private BottomNavigationView navigation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,34 +35,46 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
 
         employeeNameTextView = (TextView) findViewById(R.id.employeeTextView);
         displayedWeekTextView = (TextView) findViewById(R.id.displayedWeekTextView);
-        //dropDown = (Spinner) findViewById(R.id.spinnerSchedule);
         scheduleTextView = (TextView) findViewById(R.id.scheduleTextView);
         backButton = (Button) findViewById(R.id.backButton);
         forwardButton = (Button) findViewById(R.id.forwardButton);
 
-        Intent i = getIntent();
-        Bundle b = i.getExtras();
-        String firstName = b.getString("firstName");
-        String lastName = b.getString("lastName");
-        employeeNameTextView.setText("Employee:" + firstName + "  " + lastName);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        Menu menu = navigation.getMenu();
+        MenuItem item = menu.getItem(2);
+        item.setChecked(true);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        Intent i = new Intent(EmployeeScheduleActivity.this, EmployeeHomePageActivity.class);
+                        startActivity(i);
+                        return true;
+                    case R.id.navigation_profile:
 
-//        dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
+                        return true;
+                    case R.id.navigation_schedule:
+
+                        return true;
+                    case R.id.navigation_announcements:
+                        return true;
+                }
+                return false;
+            }}
+        );
+
+
+
+
+
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        /*
         Date current = Calendar.getInstance().getTime();
         Date begin = current;
         SimpleDateFormat dayOfWeek = new SimpleDateFormat("EEE", Locale.US);
@@ -69,6 +87,8 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
         Date end = changeDate(begin, 6);
         SimpleDateFormat proper = new SimpleDateFormat("MM/DD/YYYY", Locale.US);
         displayedWeekTextView.setText(proper.format(begin) + " - " + proper.format(end));
+        */
+
     }
 
     private Date changeDate(Date date, int days) {

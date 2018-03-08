@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,31 +25,6 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
     private ToggleButton clockInButton;
     private ToggleButton breakButton;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_profile:
-                    mTextMessage.setText(R.string.title_profile);
-                    return true;
-                case R.id.navigation_schedule:
-                    mTextMessage.setText(R.string.title_schedule);
-                    Intent i = new Intent(EmployeeHomePageActivity.this, EmployeeScheduleActivity.class);
-                    startActivity(i);
-                    return true;
-                case R.id.navigation_announcements:
-                    mTextMessage.setText(R.string.title_announcement);
-                    return true;
-            }
-            return false;
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +32,35 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
 
         mTextMessage = (TextView) findViewById(R.id.employeeTestTextView);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        Menu menu = navigation.getMenu();
+        MenuItem item = menu.getItem(0);
+        item.setChecked(true);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+
+                        return true;
+                    case R.id.navigation_profile:
+
+                        return true;
+                    case R.id.navigation_schedule:
+
+                        Intent i = new Intent(EmployeeHomePageActivity.this, EmployeeScheduleActivity.class);
+                        startActivity(i);
+                        return true;
+                    case R.id.navigation_announcements:
+
+                        return true;
+                }
+                return false;
+            }
+        }
+        );
+
+
+
 
         clockInButton = (ToggleButton) findViewById(R.id.toggleClockButton);
         breakButton = (ToggleButton) findViewById(R.id.breakButton);
