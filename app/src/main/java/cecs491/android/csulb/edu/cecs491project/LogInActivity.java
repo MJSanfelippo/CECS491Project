@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private Button buttonSignUp;
     /**
      * sign in button
      */
@@ -71,6 +72,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
         buttonSignIn.setOnClickListener(this);
+        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
+        buttonSignUp.setOnClickListener(this);
 
         db = FirebaseDatabase.getInstance();
 
@@ -78,6 +81,11 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    /**
+    private void signUpUser(){
+        Intent i = new Intent(LogInActivity.this, NewUserActivity.class);
+        startActivity(i);
+    } **/
     /**
      * Retrieves the email and password from the text fields and performs some validation on them
      * If they pass the validation, a sign in is attempted
@@ -155,6 +163,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view){
         if (view == buttonSignIn){
             signInUser();
+        } else if (view == buttonSignUp){
+            signUpUser();
         }
     }
 }
