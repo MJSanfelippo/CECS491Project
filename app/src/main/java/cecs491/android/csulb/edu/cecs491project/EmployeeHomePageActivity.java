@@ -52,6 +52,7 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_home_page);
 
+
         clockInButton = (ToggleButton) findViewById(R.id.toggleClockButton);
         todaysShift = (TextView) findViewById(R.id.DailyShift);
         user = FirebaseAuth.getInstance().getCurrentUser();

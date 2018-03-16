@@ -8,6 +8,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,24 +30,36 @@ public class EmployeeProfileActivity extends AppCompatActivity {
     private TextView lastNameTextView;
     private TextView emailTextView;
     private TextView phoneTextView;
+    private Button signOutButton;
 
     private User user;
     private DatabaseReference ref;
-    private FirebaseUser fbUser;
+    private FirebaseAuth auth;
     private String uid;
+    private FirebaseUser fbUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_profile);
 
+        auth = FirebaseAuth.getInstance();
+        fbUser = auth.getCurrentUser();
 
+        signOutButton = (Button) findViewById(R.id.signOutButton);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                auth.signOut();
+                Intent i = new Intent(EmployeeProfileActivity.this, LogInActivity.class);
+                startActivity(i);
+            }
+        });
         firstNameTextView = (TextView) findViewById(R.id.profileFirstName);
         lastNameTextView = (TextView) findViewById(R.id.profileLastName);
         emailTextView = (TextView) findViewById(R.id.profileEmail);
         phoneTextView = (TextView) findViewById(R.id.profilePhone);
 
         ref = FirebaseDatabase.getInstance().getReference("Users");
-        fbUser = FirebaseAuth.getInstance().getCurrentUser();
         uid = fbUser.getUid();
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override

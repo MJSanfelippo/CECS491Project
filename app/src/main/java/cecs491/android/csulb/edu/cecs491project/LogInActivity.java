@@ -51,14 +51,53 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseDatabase db;
 
     private FirebaseUser firebaseUser;
+    private String userId;
+    private DatabaseReference ref;
+    private String userType;
+    private String firstName;
+    private String lastName;
+    private ValueEventListener userListener;
 
 
+    private void signIn(){
+        Intent intent;
+        if (userType.equalsIgnoreCase("Employer")){
+            intent = new Intent(LogInActivity.this, EmployerHomePageActivity.class);
+            Bundle b = new Bundle();
+            b.putString("firstName", firstName);
+            b.putString("lastName", lastName);
+            intent.putExtras(b);
+            startActivity(intent);
+        } else {
+            intent = new Intent(LogInActivity.this, EmployeeHomePageActivity.class);
+            Bundle b = new Bundle();
+            b.putString("firstName", firstName);
+            b.putString("lastName", lastName);
+            intent.putExtras(b);
+            startActivity(intent);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
+
+        userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userType = dataSnapshot.child("User Type").getValue().toString();
+                firstName = dataSnapshot.child("First Name").getValue().toString();
+                lastName = dataSnapshot.child("Last Name").getValue().toString();
+                signIn();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+
         firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
 
         progressDialog = new ProgressDialog(this);
 
@@ -70,10 +109,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
         buttonSignIn.setOnClickListener(this);
         buttonSignUp.setOnClickListener(this);
-
-        db = FirebaseDatabase.getInstance();
-
-
 
     }
 
@@ -111,39 +146,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                     Toast.makeText(LogInActivity.this, "Signed in successful", Toast.LENGTH_LONG).show();
 
                     firebaseUser = firebaseAuth.getCurrentUser();
-                    final String userId = firebaseUser.getUid();
-                    DatabaseReference ref = db.getReference("Users");
-                    ValueEventListener userListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            String userType = dataSnapshot.child("User Type").getValue().toString();
-                            String firstName = dataSnapshot.child("First Name").getValue().toString();
-                            String lastName = dataSnapshot.child("Last Name").getValue().toString();
-                            String email = dataSnapshot.child("Email").getValue().toString();
-                            String phone = dataSnapshot.child("Phone").getValue().toString();
-                            Intent intent;
-                            if (userType.equalsIgnoreCase("Employer")){
-                                intent = new Intent(LogInActivity.this, EmployerHomePageActivity.class);
-                                Bundle b = new Bundle();
-                                b.putString("firstName", firstName);
-                                b.putString("lastName", lastName);
-                                intent.putExtras(b);
-                                startActivity(intent);
-                            } else {
-                                intent = new Intent(LogInActivity.this, EmployeeHomePageActivity.class);
-                                Bundle b = new Bundle();
-                                b.putString("firstName", firstName);
-                                b.putString("lastName", lastName);
-                                intent.putExtras(b);
-                                startActivity(intent);
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {}
-                    };
-                    ref.child(userId).addListenerForSingleValueEvent(userListener); // get the user type of the given user id
+                    userId = firebaseUser.getUid();
+                    ref = db.getReference("Users");
+                    ref.child(userId).addListenerForSingleValueEvent(userListener);
                     progressDialog.dismiss();
                 } else {
                     Toast.makeText(LogInActivity.this, "Not successful", Toast.LENGTH_LONG).show();
