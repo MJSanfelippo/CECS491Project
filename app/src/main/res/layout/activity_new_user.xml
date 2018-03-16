@@ -4,58 +4,67 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp
-" />
-
     <EditText
         android:id="@+id/editTextFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_margin="10dp"
         android:inputType="textPersonName"
         android:hint="First Name" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
+
 
     <EditText
         android:id="@+id/editTextLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_margin="10dp"
         android:inputType="textPersonName"
         android:hint="Last Name" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_margin="10dp"
         android:inputType="textEmailAddress"
         android:hint="Email Address"/>
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
+
 
     <EditText
         android:id="@+id/editTextPhone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_margin="10dp"
         android:inputType="phone"
         android:hint="Phone #"/>
 
-    <Space
+    <EditText
+        android:id="@+id/signUpEnterPassword"
         android:layout_width="match_parent"
-        android:layout_height="16dp" />
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="10dp"
+        android:inputType="textPassword"
+        android:hint="Password"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="10dp"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:id="@+id/signUpConfirmPassword"/>
+
+
 
     <CheckBox
         android:id="@+id/employerCheckBox"
@@ -63,12 +72,10 @@
         android:layout_height="wrap_content"
         android:text="Employer" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="16dp" />
+
 
     <Button
-        android:id="@+id/submitButton"
+        android:id="@+id/newUserSubmitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Submit" />

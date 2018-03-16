@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.LoginFilter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -16,17 +15,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private Button buttonSignUp;
     /**
      * sign in button
      */
@@ -54,7 +52,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseUser firebaseUser;
 
-    public static User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +63,13 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         progressDialog = new ProgressDialog(this);
 
         buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
+        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
 
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
         buttonSignIn.setOnClickListener(this);
+        buttonSignUp.setOnClickListener(this);
 
         db = FirebaseDatabase.getInstance();
 
@@ -78,6 +77,10 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    private void signUpUser(){
+        Intent i = new Intent(LogInActivity.this, NewUserActivity.class);
+        startActivity(i);
+    }
     /**
      * Retrieves the email and password from the text fields and performs some validation on them
      * If they pass the validation, a sign in is attempted
@@ -118,7 +121,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                             String lastName = dataSnapshot.child("Last Name").getValue().toString();
                             String email = dataSnapshot.child("Email").getValue().toString();
                             String phone = dataSnapshot.child("Phone").getValue().toString();
-                            user = new User(email, firstName, lastName, phone, userType, userId);
                             Intent intent;
                             if (userType.equalsIgnoreCase("Employer")){
                                 intent = new Intent(LogInActivity.this, EmployerHomePageActivity.class);
@@ -155,6 +157,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view){
         if (view == buttonSignIn){
             signInUser();
+        } else if (view == buttonSignUp){
+            signUpUser();
         }
     }
 }

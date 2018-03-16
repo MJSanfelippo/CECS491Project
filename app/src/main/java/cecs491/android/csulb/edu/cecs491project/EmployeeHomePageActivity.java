@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,24 +44,23 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
     private DatabaseReference ref;
     private String possibleShiftId;
 
-    public static User user;
+    private FirebaseUser user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_home_page);
-        user = LogInActivity.user;
 
         clockInButton = (ToggleButton) findViewById(R.id.toggleClockButton);
         todaysShift = (TextView) findViewById(R.id.DailyShift);
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         Date d = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMddyyyy");
         String today = simpleDateFormat.format(d).toString();
         possibleShiftId = user.getUid()+"@"+today;
 
-        mTextMessage = (TextView) findViewById(R.id.employeeTestTextView);
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("Shifts");
         ValueEventListener valueEventListener = new ValueEventListener() {
