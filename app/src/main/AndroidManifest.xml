@@ -22,6 +22,7 @@
         <activity android:name=".EmployerHomePageActivity" />
         <activity android:name=".EmployeeScheduleActivity" />
         <activity android:name=".NewUserActivity"></activity>
+        <activity android:name=".EmployeeProfileActivity"></activity>
     </application>
 
 </manifest>

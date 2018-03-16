@@ -98,17 +98,17 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-
                         return true;
                     case R.id.navigation_profile:
-
+                        intent = new Intent(EmployeeHomePageActivity.this, EmployeeProfileActivity.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_schedule:
-
-                        Intent i = new Intent(EmployeeHomePageActivity.this, EmployeeScheduleActivity.class);
-                        startActivity(i);
+                        intent = new Intent(EmployeeHomePageActivity.this, EmployeeScheduleActivity.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
 
