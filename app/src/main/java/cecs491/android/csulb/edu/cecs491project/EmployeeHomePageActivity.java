@@ -35,7 +35,6 @@ import java.util.Map;
 
 public class EmployeeHomePageActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
     private ToggleButton clockInButton;
     private ToggleButton breakButton;
     private TextView todaysShift;
