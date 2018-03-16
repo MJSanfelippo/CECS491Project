@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editTextFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="10dp"
+        android:inputType="textPersonName"
+        android:hint="First Name" />
+
+
+
+    <EditText
+        android:id="@+id/editTextLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="10dp"
+        android:inputType="textPersonName"
+        android:hint="Last Name" />
+
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="10dp"
+        android:inputType="textEmailAddress"
+        android:hint="Email Address"/>
+
+
+
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="10dp"
+        android:inputType="phone"
+        android:hint="Phone #"/>
+
+    <EditText
+        android:id="@+id/signUpEnterPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="10dp"
+        android:inputType="textPassword"
+        android:hint="Password"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_margin="10dp"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:id="@+id/signUpConfirmPassword"/>
+
+
+
+    <CheckBox
+        android:id="@+id/employerCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Employer" />
+
+
+
+    <Button
+        android:id="@+id/newUserSubmitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit" />
+
+</LinearLayout>

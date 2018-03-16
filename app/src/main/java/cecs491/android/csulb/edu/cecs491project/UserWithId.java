@@ -4,24 +4,35 @@ package cecs491.android.csulb.edu.cecs491project;
  * Created by Michael on 3/3/2018.
  */
 
-public class User {
+public class UserWithId {
 
     private String email;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String userType;
+    private String uid;
 
-    public User(){
+    public UserWithId(){
         // it wants a default constructor for firebase for some reason
     }
 
-    public User(String email, String firstName, String lastName, String phoneNumber, String userType){
+    public UserWithId(String email, String firstName, String lastName, String phoneNumber, String userType, String uid){
         this.email = email;
+        this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.userType = userType;
+    }
+
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getEmail() {

@@ -11,17 +11,10 @@ import android.widget.TextView;
 
 public class EmployerHomePageActivity extends Activity {
 
-    private TextView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employer_home_page);
-
-        test = (TextView) findViewById(R.id.employerTestTextView);
-        Intent i = getIntent();
-        Bundle b = i.getExtras();
-        String firstName = b.getString("firstName");
-        test.setText("Welcome to your home page, " + firstName + "!");
     }
 }
