@@ -8,7 +8,7 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="Home" />
 
-    <!--Users Button-->
+    <!--Profile Button-->
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_account_circle_black_24dp"

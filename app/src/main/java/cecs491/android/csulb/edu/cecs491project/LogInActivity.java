@@ -108,7 +108,11 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
         buttonSignIn.setOnClickListener(this);
+
+        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
         buttonSignUp.setOnClickListener(this);
+
+        db = FirebaseDatabase.getInstance();
 
     }
 
@@ -116,6 +120,11 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         Intent i = new Intent(LogInActivity.this, NewUserActivity.class);
         startActivity(i);
     }
+    /**
+    private void signUpUser(){
+        Intent i = new Intent(LogInActivity.this, NewUserActivity.class);
+        startActivity(i);
+    } **/
     /**
      * Retrieves the email and password from the text fields and performs some validation on them
      * If they pass the validation, a sign in is attempted
