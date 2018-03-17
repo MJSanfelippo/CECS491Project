@@ -26,6 +26,7 @@
         <activity android:name=".NewUserActivity" />
         <activity android:name=".EmployeeProfileActivity"/>
         <activity android:name=".EmployerProfileActivity"/>
+        <activity android:name=".EmployerAdminActivity"/>
     </application>
 
 </manifest>
