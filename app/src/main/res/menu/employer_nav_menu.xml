@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--Home Button-->
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home" />
+
+    <!--Profile Button-->
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:title="Profile" />
+
+    <!--Schedule Button-->
+    <item
+        android:id="@+id/navigation_schedule"
+        android:icon="@drawable/ic_schedule_black_24dp"
+        android:title="Schedules" />
+
+    <!--Announcements Button-->
+    <item
+        android:id="@+id/navigation_announcements"
+        android:icon="@drawable/ic_announcement_black_24dp"
+        android:title="Announcements" />
+
+    <item
+        android:id="@+id/navigation_admin"
+        android:icon="@drawable/ic_announcement_black_24dp"
+        android:title="Admin" />
+
+</menu>

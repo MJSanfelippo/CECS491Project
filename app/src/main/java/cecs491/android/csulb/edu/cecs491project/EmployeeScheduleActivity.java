@@ -1,6 +1,7 @@
 package cecs491.android.csulb.edu.cecs491project;
 
 import android.content.Intent;
+
 //import android.icu.text.SimpleDateFormat;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -43,6 +44,8 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_schedule);
 
+
+
         // How to get list of all users
         /*
         db = FirebaseDatabase.getInstance();
@@ -77,13 +80,15 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        Intent i = new Intent(EmployeeScheduleActivity.this, EmployeeHomePageActivity.class);
-                        startActivity(i);
+                        intent = new Intent(EmployeeScheduleActivity.this, EmployeeHomePageActivity.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_profile:
-
+                        intent = new Intent(EmployeeScheduleActivity.this, EmployeeProfileActivity.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_schedule:
 
@@ -116,4 +121,3 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
         displayedWeekTextView.setText(lastSunday + "  -  " + thisComingSaturday);
     }
 }
-

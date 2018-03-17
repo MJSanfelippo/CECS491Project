@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cecs491.android.csulb.edu.cecs491project">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,16 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LogInActivity">
+        <activity android:name=".LoadingScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EmployeeHomePageActivity"></activity>
-        <activity android:name=".EmployerHomePageActivity"></activity>
-        <activity android:name=".EmployeeScheduleActivity"></activity>
+        <activity android:name=".LogInActivity"/>
+        <activity android:name=".EmployeeHomePageActivity" />
+        <activity android:name=".EmployerHomePageActivity" />
+        <activity android:name=".EmployeeScheduleActivity" />
+        <activity android:name=".NewUserActivity" />
+        <activity android:name=".EmployeeProfileActivity"/>
     </application>
 
 </manifest>
