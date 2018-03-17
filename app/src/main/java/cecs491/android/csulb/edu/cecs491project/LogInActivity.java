@@ -22,8 +22,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class LogInActivity extends AppCompatActivity implements View.OnClickListener{
+public class LogInActivity extends AppCompatActivity{
 
+    /**
+     * sign up button
+     */
     private Button buttonSignUp;
     /**
      * sign in button
@@ -48,83 +51,116 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
      */
     private FirebaseAuth firebaseAuth;
 
+    /**
+     * firebase database
+     */
     private FirebaseDatabase db;
 
+    /**
+     * firebase user
+     */
     private FirebaseUser firebaseUser;
+
+    /**
+     * the user's id
+     */
     private String userId;
+
+    /**
+     * the reference to the database
+     */
     private DatabaseReference ref;
+
+    /**
+     * the type of user: employee or employer
+     */
     private String userType;
-    private String firstName;
-    private String lastName;
+
+    /**
+     * value event listener to grab data from the database when an event happens
+     */
     private ValueEventListener userListener;
 
-
-    private void signIn(){
+    /**
+     * Takes the user to their home page depending on whether they're an employee or employer
+     */
+    private void goToHomePage(){
         Intent intent;
         if (userType.equalsIgnoreCase("Employer")){
             intent = new Intent(LogInActivity.this, EmployerHomePageActivity.class);
-            Bundle b = new Bundle();
-            b.putString("firstName", firstName);
-            b.putString("lastName", lastName);
-            intent.putExtras(b);
             startActivity(intent);
         } else {
             intent = new Intent(LogInActivity.this, EmployeeHomePageActivity.class);
-            Bundle b = new Bundle();
-            b.putString("firstName", firstName);
-            b.putString("lastName", lastName);
-            intent.putExtras(b);
             startActivity(intent);
         }
     }
+
+    /**
+     * instantiates all the necessary variables
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        instantiateValueEventListener();
+        instantiateFirebase();
+        instantiateLayout();
+    }
 
-
+    /**
+     * instantiate the value event listener to get the user type, first name, and last name
+     */
+    private void instantiateValueEventListener(){
         userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userType = dataSnapshot.child("User Type").getValue().toString();
-                firstName = dataSnapshot.child("First Name").getValue().toString();
-                lastName = dataSnapshot.child("Last Name").getValue().toString();
-                signIn();
+                goToHomePage();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        db = FirebaseDatabase.getInstance();
-
-        progressDialog = new ProgressDialog(this);
-
-        buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
-        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
-
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-
-        buttonSignIn.setOnClickListener(this);
-
-        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
-        buttonSignUp.setOnClickListener(this);
-
-        db = FirebaseDatabase.getInstance();
-
-    }
-
-    private void signUpUser(){
-        Intent i = new Intent(LogInActivity.this, NewUserActivity.class);
-        startActivity(i);
     }
     /**
-    private void signUpUser(){
+     * instantiate the firebase authentication and database
+     */
+    private void instantiateFirebase(){
+        firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance();
+    }
+
+    /**
+     * instantiate all the layout components
+     */
+    private void instantiateLayout(){
+        progressDialog = new ProgressDialog(this);
+        buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
+        buttonSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signInUser();
+            }
+        });
+        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToSignUpPage();
+            }
+        });
+        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+    }
+
+    /**
+     * Takes the user to the sign up page
+     */
+    private void goToSignUpPage(){
         Intent i = new Intent(LogInActivity.this, NewUserActivity.class);
         startActivity(i);
-    } **/
+    }
+
     /**
      * Retrieves the email and password from the text fields and performs some validation on them
      * If they pass the validation, a sign in is attempted
@@ -134,45 +170,30 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     private void signInUser(){
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
-
         if (TextUtils.isEmpty(email)){
-            Toast.makeText(this, "please enter email", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please enter email", Toast.LENGTH_LONG).show();
             return;
         }
-
         if (TextUtils.isEmpty(password)){
-            Toast.makeText(this, "please enter password", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please enter password", Toast.LENGTH_LONG).show();
             return;
         }
-
         progressDialog.setMessage("Attempting login...");
         progressDialog.show();
-
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    Toast.makeText(LogInActivity.this, "Signed in successful", Toast.LENGTH_LONG).show();
-
                     firebaseUser = firebaseAuth.getCurrentUser();
                     userId = firebaseUser.getUid();
                     ref = db.getReference("Users");
                     ref.child(userId).addListenerForSingleValueEvent(userListener);
                     progressDialog.dismiss();
                 } else {
-                    Toast.makeText(LogInActivity.this, "Not successful", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LogInActivity.this, "Sign in unsuccessful", Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                 }
             }
         });
-
-    }
-    @Override
-    public void onClick(View view){
-        if (view == buttonSignIn){
-            signInUser();
-        } else if (view == buttonSignUp){
-            signUpUser();
-        }
     }
 }

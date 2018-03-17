@@ -10,10 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,52 +22,51 @@ import java.util.Date;
 
 public class EmployerScheduleActivity extends AppCompatActivity {
 
-    //private Spinner dropDown;
-    private TextView employerNameTextView;
+    /**
+     * the employer displayed week text view reference
+     */
     private TextView employerDisplayedWeekTextView;
-    private TextView employerScheduleTextView;
+
+    /**
+     * the back button reference
+     */
     private Button employerBackButton;
+
+    /**
+     * the forward button reference
+     */
     private Button employerForwardButton;
 
+    /**
+     * the bottom nav view reference
+     */
     private BottomNavigationView navigation;
 
+    /**
+     * the firebase database reference
+     */
     private FirebaseDatabase db;
+
+    /**
+     * the database reference itself
+     */
     private DatabaseReference ref;
+
+    /**
+     * the calendar reference to keep track of weeks/dates
+     */
     private Calendar calendar;
+
+    /**
+     * the date formatter
+     */
     private SimpleDateFormat dayOfWeek;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_employer_schedule);
-
-
-        dayOfWeek = new SimpleDateFormat("MM/dd/yyyy");
-
-        // How to get list of all users
-        /*
-        db = FirebaseDatabase.getInstance();
-        ref = db.getReference("Users");
-
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot s: dataSnapshot.getChildren()){
-                    Toast.makeText(EmployeeScheduleActivity.this, s.getKey(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-        ref.addValueEventListener(valueEventListener);
-        */
-
-        employerNameTextView = (TextView) findViewById(R.id.employerTextView);
+    /**
+     * instantiate all layout components
+     */
+    private void instantiatelayout(){
         employerDisplayedWeekTextView = (TextView) findViewById(R.id.employerDisplayedWeekTextView);
-        employerScheduleTextView = (TextView) findViewById(R.id.employerScheduleTextView);
         employerBackButton = (Button) findViewById(R.id.employerBackButton);
         employerBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,10 +85,21 @@ public class EmployerScheduleActivity extends AppCompatActivity {
                 employerDisplayedWeekTextView.setText(nextSunday + "  -  " + nextSaturday);
             }
         });
-
-        calendar = Calendar.getInstance();
-
         navigation = (BottomNavigationView) findViewById(R.id.navigationEmployer);
+    }
+
+    /**
+     * instantiate the calendar components
+     */
+    private void instantiateCalendarComponents(){
+        dayOfWeek = new SimpleDateFormat("MM/dd/yyyy");
+        calendar = Calendar.getInstance();
+    }
+
+    /**
+     * handle what happens when the user clicks on the navigation menu
+     */
+    private void handleNavMenu(){
         Menu menu = navigation.getMenu();
         MenuItem item = menu.getItem(2);
         item.setChecked(true);
@@ -119,10 +127,27 @@ public class EmployerScheduleActivity extends AppCompatActivity {
                 return false;
             }}
         );
-
-
     }
 
+    /**
+     * create the activity
+     * @param savedInstanceState the saved instance state
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_employer_schedule);
+
+        instantiatelayout();
+        instantiateCalendarComponents();
+        handleNavMenu();
+        setCurrentWeek();
+    }
+
+    /**
+     * gets the most recent sunday using magic
+     * @return the date of the most recent sunday
+     */
     public String getMostRecentSunday(){
         Date current = new Date();
         SimpleDateFormat dayOfWeek = new SimpleDateFormat("MM/dd/yyyy");
@@ -132,44 +157,70 @@ public class EmployerScheduleActivity extends AppCompatActivity {
         return lastSunday;
     }
 
+    /**
+     * get the upcoming saturday by adding 6 to current date
+     * @return the date of the upcoming saturday
+     */
     public String getUpcomingSaturday(){
-        calendar.add(Calendar.DAY_OF_WEEK, 6);
+        calendar.add(Calendar.DAY_OF_YEAR, 6);
         String upcomingSaturday = dayOfWeek.format(calendar.getTime());
         return upcomingSaturday;
     }
 
+    /**
+     * get the last saturday by adding 6 to the current date
+     * the date before this will be the last sunday, so sunday+6 = saturday
+     * @return the date that is the last saturday
+     */
     public String getLastSaturday(){
         calendar.add(calendar.DAY_OF_YEAR, 6);
         String lastSaturday = dayOfWeek.format(calendar.getTime());
         return lastSaturday;
     }
 
+    /**
+     * get the date of the next sunday by adding 1 to the current date
+     * the date before this will be the previous saturday, so saturday+1=sunday
+     * @return the date that is the next sunday
+     */
     public String getNextSunday(){
         calendar.add(calendar.DAY_OF_YEAR, 1);
         String nextSunday = dayOfWeek.format(calendar.getTime());
         return nextSunday;
     }
 
+    /**
+     * get the date of the next saturday by adding 6
+     * the date before this will be a sunday, so sunday+6=saturday
+     * @return the date of the next saturday
+     */
     public String getNextSaturday(){
         calendar.add(calendar.DAY_OF_YEAR, 6);
         String nextSaturday = dayOfWeek.format(calendar.getTime());
         return nextSaturday;
     }
+
+    /**
+     * get the date of the last sunday by adding -7 to the current date which is sunday
+     * @return the date of the last sunday
+     */
     public String getLastSunday(){
         String mostRecentSunday = getMostRecentSunday();
         calendar.add(calendar.DAY_OF_YEAR, -7);
         String lastSunday = dayOfWeek.format(calendar.getTime());
         return lastSunday;
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
+    /**
+     * get the current dates for the week
+     * get most recent sunday and upcoming saturday
+     */
+    private void setCurrentWeek(){
         Date current = new Date();
         String formattedDate = dayOfWeek.format(current);
         employerDisplayedWeekTextView.setText(formattedDate);
-
         String lastSunday = getMostRecentSunday();
         String thisComingSaturday = getUpcomingSaturday();
         employerDisplayedWeekTextView.setText(lastSunday + "  -  " + thisComingSaturday);
     }
+
 }

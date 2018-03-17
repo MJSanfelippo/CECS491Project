@@ -19,35 +19,65 @@ import javax.security.auth.login.LoginException;
 
 public class LoadingScreenActivity extends AppCompatActivity {
 
+    /**
+     * the value event listener
+     */
     private ValueEventListener userListener;
-    private String userType;
-    private String firstName;
-    private String lastName;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase db;
-    private String userId;
-    private DatabaseReference ref;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading_screen);
 
+    /**
+     * the user type
+     */
+    private String userType;
+
+    /**
+     * the firebase authentication reference
+     */
+    private FirebaseAuth firebaseAuth;
+
+    /**
+     * the firebase database
+     */
+    private FirebaseDatabase db;
+
+    /**
+     * the user id
+     */
+    private String userId;
+
+    /**
+     * the database reference
+     */
+    private DatabaseReference ref;
+
+    /**
+     * instantiates the value event listener to get user type and name
+     */
+    private void instantiateValueEventListener(){
         userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userType = dataSnapshot.child("User Type").getValue().toString();
-                firstName = dataSnapshot.child("First Name").getValue().toString();
-                lastName = dataSnapshot.child("Last Name").getValue().toString();
-                signIn();
+                goToHomePage();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
+    }
+
+    /**
+     * instantiate the firebase components
+     */
+    private void instantiateFirebase(){
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
+    }
 
-
+    /**
+     * handle the authentication
+     * if the user is not null then they are still logged in
+     * otherwise send them to the login screen
+     */
+    private void handleAuthentication(){
         if (firebaseAuth.getCurrentUser() != null){
             userId = firebaseAuth.getCurrentUser().getUid();
             ref = db.getReference("Users");
@@ -57,22 +87,30 @@ public class LoadingScreenActivity extends AppCompatActivity {
             startActivity(i);
         }
     }
+    /**
+     * creates the activity
+     * @param savedInstanceState the saved instance state
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_loading_screen);
 
-    private void signIn(){
+        instantiateFirebase();
+        instantiateValueEventListener();
+        handleAuthentication();
+    }
+
+    /**
+     * send the user to the correct homepage
+     */
+    private void goToHomePage(){
         Intent intent;
         if (userType.equalsIgnoreCase("Employer")){
             intent = new Intent(LoadingScreenActivity.this, EmployerHomePageActivity.class);
-            Bundle b = new Bundle();
-            b.putString("firstName", firstName);
-            b.putString("lastName", lastName);
-            intent.putExtras(b);
             startActivity(intent);
         } else {
             intent = new Intent(LoadingScreenActivity.this, EmployeeHomePageActivity.class);
-            Bundle b = new Bundle();
-            b.putString("firstName", firstName);
-            b.putString("lastName", lastName);
-            intent.putExtras(b);
             startActivity(intent);
         }
     }
