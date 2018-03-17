@@ -12,7 +12,7 @@
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_account_circle_black_24dp"
-        android:title="Employees" />
+        android:title="Profile" />
 
     <!--Schedule Button-->
     <item
@@ -25,5 +25,11 @@
         android:id="@+id/navigation_announcements"
         android:icon="@drawable/ic_announcement_black_24dp"
         android:title="Announcements" />
+
+    <!--Admin Button-->
+    <item
+        android:id="@+id/navigation_admin"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="Administration" />
 
 </menu>
