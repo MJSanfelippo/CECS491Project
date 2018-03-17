@@ -89,11 +89,11 @@ public class EmployerProfileActivity extends AppCompatActivity {
      * instantiate all layout components
      */
     private void instantiateLayout(){
-        firstNameTextView = (TextView) findViewById(R.id.employerProfileFirstName);
-        lastNameTextView = (TextView) findViewById(R.id.employerProfileLastName);
-        emailTextView = (TextView) findViewById(R.id.employerProfileEmail);
-        phoneTextView = (TextView) findViewById(R.id.employerProfilePhone);
-        signOutButton = (Button) findViewById(R.id.signOutButton);
+        firstNameTextView = findViewById(R.id.employerProfileFirstName);
+        lastNameTextView = findViewById(R.id.employerProfileLastName);
+        emailTextView =findViewById(R.id.employerProfileEmail);
+        phoneTextView = findViewById(R.id.employerProfilePhone);
+        signOutButton = findViewById(R.id.signOutButton);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,7 +102,7 @@ public class EmployerProfileActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        navigation = (BottomNavigationView) findViewById(R.id.navigationEmployer);
+        navigation = findViewById(R.id.navigationEmployer);
     }
 
     /**
@@ -161,6 +161,8 @@ public class EmployerProfileActivity extends AppCompatActivity {
                     case R.id.navigation_announcements:
                         return true;
                     case R.id.navigation_admin:
+                        intent = new Intent(EmployerProfileActivity.this, EmployerAdminActivity.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;

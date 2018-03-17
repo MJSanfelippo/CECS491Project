@@ -31,75 +31,103 @@ import java.util.Map;
  */
 
 public class EmployerAdminActivity extends AppCompatActivity {
-    Button editShiftButton, editEmployeeButton, editAnnouncementsButton;
 
-    //private FirebaseDatabase db;
-    //private DatabaseReference ref;
-    //private FirebaseUser user;
+    /**
+     * the shift button reference
+     */
+    private Button shiftButton;
 
+    /**
+     * the employee button reference
+     */
+    private Button employeeButton;
 
+    /**
+     * the announcements button reference
+     */
+    private Button announcementsButton;
+
+    /**
+     * the bottom nav view reference
+     */
+    private BottomNavigationView navigation;
+
+    /**
+     * instantiate all layout components
+     */
+    private void instantiateLayout(){
+        shiftButton = findViewById(R.id.editShiftButton);
+        employeeButton = findViewById(R.id.editEmployeeButton);
+        announcementsButton = findViewById(R.id.editAnnouncementsButton);
+
+        shiftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        employeeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        announcementsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        navigation = findViewById(R.id.navigationEmployer);
+    }
+
+    /**
+     * handle navigation menu choices
+     */
+    private void handleNavMenu(){
+        Menu menu = navigation.getMenu();
+        MenuItem item = menu.getItem(4);
+        item.setChecked(true);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        intent = new Intent(EmployerAdminActivity.this, EmployerHomePageActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.navigation_profile:
+                        intent = new Intent(EmployerAdminActivity.this, EmployerProfileActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.navigation_schedule:
+                        intent = new Intent(EmployerAdminActivity.this, EmployerScheduleActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.navigation_announcements:
+                        return true;
+                    case R.id.navigation_admin:
+                        return true;
+                }
+                return false;
+            }}
+        );
+    }
+
+    /**
+     * create the activity
+     * @param savedInstanceState the saved instance state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employer_admin);
-        editShiftButton = (Button) findViewById(R.id.editShiftButton);
-        editEmployeeButton = (Button) findViewById(R.id.editEmployeeButton);
-        editAnnouncementsButton = (Button) findViewById(R.id.editAnnouncementsButton);
 
-        editShiftButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                
-            }
-        });
-
-        editEmployeeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        editAnnouncementsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigationEmployer);
-        Menu menu = navigation.getMenu();
-        MenuItem item = menu.getItem(0);
-        item.setChecked(true);
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                                                           @Override
-                                                           public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                                                               Intent intent;
-                                                               switch (item.getItemId()) {
-                                                                   case R.id.navigation_home:
-                                                                       intent = new Intent(EmployerAdminActivity.this, EmployerHomePageActivity.class);
-                                                                       startActivity(intent);
-                                                                       return true;
-                                                                   case R.id.navigation_profile:
-                                                                       intent = new Intent(EmployerAdminActivity.this, EmployerProfileActivity.class);
-                                                                       startActivity(intent);
-                                                                       return true;
-                                                                   case R.id.navigation_schedule:
-                                                                       intent = new Intent(EmployerAdminActivity.this, EmployerScheduleActivity.class);
-                                                                       startActivity(intent);
-                                                                       return true;
-                                                                   case R.id.navigation_announcements:
-                                                                       return true;
-                                                                   case R.id.navigation_admin:
-                                                                       return true;
-                                                               }
-                                                               return false;
-                                                           }
-                                                       }
-        );
-
-
-
-
+        instantiateLayout();
+        handleNavMenu();
     }
 }

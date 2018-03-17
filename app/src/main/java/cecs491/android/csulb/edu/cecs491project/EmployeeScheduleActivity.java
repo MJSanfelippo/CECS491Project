@@ -62,8 +62,8 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
      * instantiate all layout components
      */
     private void instantiateLayout(){
-        displayedWeekTextView = (TextView) findViewById(R.id.displayedWeekTextView);
-        backButton = (Button) findViewById(R.id.backButton);
+        displayedWeekTextView = findViewById(R.id.displayedWeekTextView);
+        backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +72,7 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
                 displayedWeekTextView.setText(lastSunday + "  -  " + lastSaturday);
             }
         });
-        forwardButton = (Button) findViewById(R.id.forwardButton);
+        forwardButton = findViewById(R.id.forwardButton);
         forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +81,7 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
                 displayedWeekTextView.setText(nextSunday + "  -  " + nextSaturday);
             }
         });
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = findViewById(R.id.navigation);
     }
 
     /**

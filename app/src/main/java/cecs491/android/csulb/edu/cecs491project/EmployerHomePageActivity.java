@@ -80,9 +80,9 @@ public class EmployerHomePageActivity extends AppCompatActivity {
      * instantiate all the layout componenets including the event listeners
      */
     private void instantiateLayout(){
-        clockInButton = (ToggleButton) findViewById(R.id.toggleClockButtonEmployer);
-        todaysShift = (TextView) findViewById(R.id.DailyShiftEmployer);
-        breakButton = (ToggleButton) findViewById(R.id.breakButtonEmployer);
+        clockInButton = findViewById(R.id.toggleClockButtonEmployer);
+        todaysShift = findViewById(R.id.DailyShiftEmployer);
+        breakButton = findViewById(R.id.breakButtonEmployer);
         clockInButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -108,7 +108,7 @@ public class EmployerHomePageActivity extends AppCompatActivity {
                 }
             }
         });
-        navigation = (BottomNavigationView) findViewById(R.id.navigationEmployer);
+        navigation = findViewById(R.id.navigationEmployer);
         breakButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -196,6 +196,8 @@ public class EmployerHomePageActivity extends AppCompatActivity {
                     case R.id.navigation_announcements:
                         return true;
                     case R.id.navigation_admin:
+                        intent = new Intent(EmployerHomePageActivity.this, EmployerAdminActivity.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;

@@ -66,8 +66,8 @@ public class EmployerScheduleActivity extends AppCompatActivity {
      * instantiate all layout components
      */
     private void instantiatelayout(){
-        employerDisplayedWeekTextView = (TextView) findViewById(R.id.employerDisplayedWeekTextView);
-        employerBackButton = (Button) findViewById(R.id.employerBackButton);
+        employerDisplayedWeekTextView = findViewById(R.id.employerDisplayedWeekTextView);
+        employerBackButton = findViewById(R.id.employerBackButton);
         employerBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +76,7 @@ public class EmployerScheduleActivity extends AppCompatActivity {
                 employerDisplayedWeekTextView.setText(lastSunday + "  -  " + lastSaturday);
             }
         });
-        employerForwardButton = (Button) findViewById(R.id.employerForwardButton);
+        employerForwardButton = findViewById(R.id.employerForwardButton);
         employerForwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +85,7 @@ public class EmployerScheduleActivity extends AppCompatActivity {
                 employerDisplayedWeekTextView.setText(nextSunday + "  -  " + nextSaturday);
             }
         });
-        navigation = (BottomNavigationView) findViewById(R.id.navigationEmployer);
+        navigation = findViewById(R.id.navigationEmployer);
     }
 
     /**
@@ -117,11 +117,12 @@ public class EmployerScheduleActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.navigation_schedule:
-
                         return true;
                     case R.id.navigation_announcements:
                         return true;
                     case R.id.navigation_admin:
+                        intent = new Intent(EmployerScheduleActivity.this, EmployerAdminActivity.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;

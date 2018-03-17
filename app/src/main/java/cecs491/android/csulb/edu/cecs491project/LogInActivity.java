@@ -135,22 +135,22 @@ public class LogInActivity extends AppCompatActivity{
      */
     private void instantiateLayout(){
         progressDialog = new ProgressDialog(this);
-        buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
+        buttonSignIn = findViewById(R.id.buttonSignIn);
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signInUser();
             }
         });
-        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
+        buttonSignUp = findViewById(R.id.buttonSignUp);
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 goToSignUpPage();
             }
         });
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
     }
 
     /**
