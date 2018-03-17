@@ -43,13 +43,6 @@
             android:text="Sign up"
             android:id="@+id/buttonSignUp"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:id="@+id/buttonSignUp"
-            android:text="Sign Up"/>
-
     </LinearLayout>
 
 </RelativeLayout>

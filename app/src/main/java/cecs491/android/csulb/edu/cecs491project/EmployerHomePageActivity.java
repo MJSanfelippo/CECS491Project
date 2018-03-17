@@ -100,11 +100,11 @@ public class EmployerHomePageActivity extends AppCompatActivity {
                     case R.id.navigation_home:
                         return true;
                     case R.id.navigation_profile:
-                        intent = new Intent(EmployerHomePageActivity.this, EmployeeProfileActivity.class);
+                        intent = new Intent(EmployerHomePageActivity.this, EmployerProfileActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_schedule:
-                        intent = new Intent(EmployerHomePageActivity.this, EmployeeScheduleActivity.class);
+                        intent = new Intent(EmployerHomePageActivity.this, EmployerScheduleActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
