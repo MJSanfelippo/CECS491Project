@@ -65,7 +65,7 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
      * the calendar reference to keep track of weeks/dates
      */
     private Calendar calendar;
-    private Calendar c;
+    private Calendar tempCalendar;
 
     /**
      * the date formatter
@@ -94,6 +94,11 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
     private TextView thursdayTextView;
     private TextView fridayTextView;
     private TextView saturdayTextView;
+
+    /**
+     * the user's id
+     */
+    private String uid;
 
     /**
      * instantiate all layout components
@@ -171,7 +176,7 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
         dayOfWeek = new SimpleDateFormat("MM/dd/yyyy");
         sdf = new SimpleDateFormat("MMddyyyy");
         calendar = Calendar.getInstance();
-        c = Calendar.getInstance();
+        tempCalendar = Calendar.getInstance();
     }
 
     /**
@@ -280,19 +285,19 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
         try {
             Date d = dayOfWeek.parse(selectedSunday);
             selectedSunday = sdf.format(d);
-            c.setTime(d);
-            c.add(Calendar.DAY_OF_YEAR,1);
-            selectedMonday = sdf.format(c.getTime());
-            c.add(Calendar.DAY_OF_YEAR,1);
-            selectedTuesday = sdf.format(c.getTime());
-            c.add(Calendar.DAY_OF_YEAR,1);
-            selectedWednesday = sdf.format(c.getTime());
-            c.add(Calendar.DAY_OF_YEAR,1);
-            selectedThursday = sdf.format(c.getTime());
-            c.add(Calendar.DAY_OF_YEAR,1);
-            selectedFriday = sdf.format(c.getTime());
-            c.add(Calendar.DAY_OF_YEAR,1);
-            selectedSaturday = sdf.format(c.getTime());
+            tempCalendar.setTime(d);
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedMonday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedTuesday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedWednesday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedThursday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedFriday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedSaturday = sdf.format(tempCalendar.getTime());
         }
         catch(ParseException ex){
             ex.printStackTrace();
@@ -305,8 +310,19 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
     private void instantiateFirebase(){
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         ref = FirebaseDatabase.getInstance().getReference("Shifts");
+        uid = fbUser.getUid();
     }
 
+    private void setShiftView(DataSnapshot dataSnapshot, String selectedDate, TextView dateTextView, String dayOfWeek){
+        String userShift = uid + "@" + selectedDate;
+        if (dataSnapshot.hasChild(userShift)){
+            String startTime = dataSnapshot.child(userShift).child("Start Time").getValue().toString();
+            String endTime = dataSnapshot.child(userShift).child("End Time").getValue().toString();
+            dateTextView.setText(dayOfWeek + ": " + startTime + " to " + endTime);
+        } else {
+            dateTextView.setText(dayOfWeek + ": No shift");
+        }
+    }
     /**
      * instantiate the value event listener to get all schedule time for a given week
      * for the current user and attach it to the corresponding text view
@@ -315,70 +331,13 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String userSundayShift = fbUser.getUid() + "@" + selectedSunday;
-                String userMondayShift = fbUser.getUid() + "@" + selectedMonday;
-                String userTuesdayShift = fbUser.getUid() + "@" + selectedTuesday;
-                String userWednesdayShift = fbUser.getUid() + "@" + selectedWednesday;
-                String userThursdayShift = fbUser.getUid() + "@" + selectedThursday;
-                String userFridayShift = fbUser.getUid() + "@" + selectedFriday;
-                String userSaturdayShift = fbUser.getUid() + "@" + selectedSaturday;
-                if(dataSnapshot.hasChild((userSundayShift))) {
-                    String sundayStartTime = dataSnapshot.child(userSundayShift).child("Start Time").getValue().toString();
-                    String sundayEndTime = dataSnapshot.child(userSundayShift).child("End Time").getValue().toString();
-                    sundayTextView.setText("Sunday: " + sundayStartTime + " to " + sundayEndTime);
-                }
-                else{
-                    sundayTextView.setText("No schedule.");
-                }
-                if(dataSnapshot.hasChild(userMondayShift)){
-                    String mondayStartTime = dataSnapshot.child(userMondayShift).child("Start Time").getValue().toString();
-                    String mondayEndTime = dataSnapshot.child(userMondayShift).child("End Time").getValue().toString();
-                    mondayTextView.setText("Monday: " + mondayStartTime + " to " + mondayEndTime);
-                }
-                else{
-                    mondayTextView.setText("No schedule.");
-
-                }
-                if(dataSnapshot.hasChild(userTuesdayShift)){
-                    String tuesdayStartTime = dataSnapshot.child(userTuesdayShift).child("Start Time").getValue().toString();
-                    String tuesdayEndTime = dataSnapshot.child(userTuesdayShift).child("End Time").getValue().toString();
-                    tuesdayTextView.setText("Tuesday: " + tuesdayStartTime + " to " + tuesdayEndTime);
-                }
-                else{
-                    tuesdayTextView.setText("No schedule.");
-                }
-                if(dataSnapshot.hasChild(userWednesdayShift)){
-                    String wednesdayStartTime = dataSnapshot.child(userWednesdayShift).child("Start Time").getValue().toString();
-                    String wednesdayEndTime = dataSnapshot.child(userWednesdayShift).child("End Time").getValue().toString();
-                    wednesdayTextView.setText("Wednesday: " + wednesdayStartTime + " to " + wednesdayEndTime);
-                }
-                else{
-                    wednesdayTextView.setText("No schedule.");
-                }
-                if(dataSnapshot.hasChild(userThursdayShift)){
-                    String thursdayStartTime = dataSnapshot.child(userThursdayShift).child("Start Time").getValue().toString();
-                    String thursdayEndTime = dataSnapshot.child(userThursdayShift).child("End Time").getValue().toString();
-                    thursdayTextView.setText("Thursday: " + thursdayStartTime + " to " + thursdayEndTime);
-                }
-                else{
-                    thursdayTextView.setText("No schedule.");
-                }
-                if(dataSnapshot.hasChild(userFridayShift)){
-                    String fridayStartTime = dataSnapshot.child(userFridayShift).child("Start Time").getValue().toString();
-                    String fridayEndTime = dataSnapshot.child(userFridayShift).child("End Time").getValue().toString();
-                    fridayTextView.setText("Friday: " + fridayStartTime + " to " + fridayEndTime);
-                }
-                else{
-                    fridayTextView.setText("No schedule.");
-                }
-                if(dataSnapshot.hasChild(userSaturdayShift)){
-                    String saturdayStartTime = dataSnapshot.child(userSaturdayShift).child("Start Time").getValue().toString();
-                    String saturdayEndTime = dataSnapshot.child(userSaturdayShift).child("End Time").getValue().toString();
-                    saturdayTextView.setText("Saturday: " + saturdayStartTime + " to " + saturdayEndTime);
-                }
-                else{
-                    saturdayTextView.setText("No schedule.");
-                }
+                setShiftView(dataSnapshot, selectedSunday, sundayTextView, "Sunday");
+                setShiftView(dataSnapshot, selectedMonday, mondayTextView, "Monday");
+                setShiftView(dataSnapshot, selectedTuesday, tuesdayTextView, "Tuesday");
+                setShiftView(dataSnapshot, selectedWednesday, wednesdayTextView, "Wednesday");
+                setShiftView(dataSnapshot, selectedThursday, thursdayTextView, "Thursday");
+                setShiftView(dataSnapshot, selectedFriday, fridayTextView, "Friday");
+                setShiftView(dataSnapshot, selectedSaturday, saturdayTextView, "Saturday");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
