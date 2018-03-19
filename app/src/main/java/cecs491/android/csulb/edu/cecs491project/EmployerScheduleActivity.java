@@ -10,8 +10,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,29 +31,24 @@ import java.util.Date;
 public class EmployerScheduleActivity extends AppCompatActivity {
 
     /**
-     * the employer displayed week text view reference
+     * the displayed week text view reference
      */
-    private TextView employerDisplayedWeekTextView;
+    private TextView displayedWeekTextView;
 
     /**
      * the back button reference
      */
-    private Button employerBackButton;
+    private Button backButton;
 
     /**
      * the forward button reference
      */
-    private Button employerForwardButton;
+    private Button forwardButton;
 
     /**
-     * the bottom nav view reference
+     * the bottom navigation bar reference
      */
     private BottomNavigationView navigation;
-
-    /**
-     * the firebase database reference
-     */
-    private FirebaseDatabase db;
 
     /**
      * the database reference itself
@@ -53,47 +56,91 @@ public class EmployerScheduleActivity extends AppCompatActivity {
     private DatabaseReference ref;
 
     /**
+     * the firebase user
+     */
+    private FirebaseUser fbUser;
+
+    /**
+     * the value event listener
+     */
+    private ValueEventListener valueEventListener;
+
+    /**
      * the calendar reference to keep track of weeks/dates
      */
     private Calendar calendar;
+    private Calendar tempCalendar;
 
     /**
      * the date formatter
      */
     private SimpleDateFormat dayOfWeek;
+    private SimpleDateFormat sdf;
+
+    /**
+     * the date for the selected days of the week
+     */
+    private String selectedSunday;
+    private String selectedMonday;
+    private String selectedTuesday;
+    private String selectedWednesday;
+    private String selectedThursday;
+    private String selectedFriday;
+    private String selectedSaturday;
+
+    /**
+     * the display text view for the days of the week
+     */
+    private TextView sundayTextView;
+    private TextView mondayTextView;
+    private TextView tuesdayTextView;
+    private TextView wednesdayTextView;
+    private TextView thursdayTextView;
+    private TextView fridayTextView;
+    private TextView saturdayTextView;
+
+    /**
+     * the user's id
+     */
+    private String uid;
 
     /**
      * instantiate all layout components
      */
-    private void instantiatelayout(){
-        employerDisplayedWeekTextView = findViewById(R.id.employerDisplayedWeekTextView);
-        employerBackButton = findViewById(R.id.employerBackButton);
-        employerBackButton.setOnClickListener(new View.OnClickListener() {
+    private void instantiateLayout(){
+        displayedWeekTextView = findViewById(R.id.displayedWeekTextView);
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String lastSunday = getLastSunday();
                 String lastSaturday = getLastSaturday();
-                employerDisplayedWeekTextView.setText(lastSunday + "  -  " + lastSaturday);
+                displayedWeekTextView.setText(lastSunday + "  -  " + lastSaturday);
+                selectedSunday = lastSunday;
+                setSchedule();
+                instantiateValueEventListener();
             }
         });
-        employerForwardButton = findViewById(R.id.employerForwardButton);
-        employerForwardButton.setOnClickListener(new View.OnClickListener() {
+        forwardButton = findViewById(R.id.forwardButton);
+        forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String nextSunday = getNextSunday();
                 String nextSaturday = getNextSaturday();
-                employerDisplayedWeekTextView.setText(nextSunday + "  -  " + nextSaturday);
+                displayedWeekTextView.setText(nextSunday + "  -  " + nextSaturday);
+                selectedSunday = nextSunday;
+                setSchedule();
+                instantiateValueEventListener();
             }
         });
-        navigation = findViewById(R.id.navigationEmployer);
-    }
-
-    /**
-     * instantiate the calendar components
-     */
-    private void instantiateCalendarComponents(){
-        dayOfWeek = new SimpleDateFormat("MM/dd/yyyy");
-        calendar = Calendar.getInstance();
+        sundayTextView = findViewById(R.id.sundayTextView);
+        mondayTextView = findViewById(R.id.mondayTextView);
+        tuesdayTextView = findViewById(R.id.tuesdayTextView);
+        wednesdayTextView = findViewById(R.id.wednesdayTextView);
+        thursdayTextView = findViewById(R.id.thursdayTextView);
+        fridayTextView = findViewById(R.id.fridayTextView);
+        saturdayTextView = findViewById(R.id.saturdayTextView);
+        navigation = findViewById(R.id.navigation);
     }
 
     /**
@@ -120,14 +167,20 @@ public class EmployerScheduleActivity extends AppCompatActivity {
                         return true;
                     case R.id.navigation_announcements:
                         return true;
-                    case R.id.navigation_admin:
-                        intent = new Intent(EmployerScheduleActivity.this, EmployerAdminActivity.class);
-                        startActivity(intent);
-                        return true;
                 }
                 return false;
             }}
         );
+    }
+
+    /**
+     * instantiate the calendar components
+     */
+    private void instantiateCalendarComponents(){
+        dayOfWeek = new SimpleDateFormat("MM/dd/yyyy");
+        sdf = new SimpleDateFormat("MMddyyyy");
+        calendar = Calendar.getInstance();
+        tempCalendar = Calendar.getInstance();
     }
 
     /**
@@ -138,11 +191,13 @@ public class EmployerScheduleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employer_schedule);
-
-        instantiatelayout();
-        instantiateCalendarComponents();
+        instantiateLayout();
         handleNavMenu();
+        instantiateCalendarComponents();
         setCurrentWeek();
+        instantiateFirebase();
+        setSchedule();
+        instantiateValueEventListener();
     }
 
     /**
@@ -211,6 +266,7 @@ public class EmployerScheduleActivity extends AppCompatActivity {
         String lastSunday = dayOfWeek.format(calendar.getTime());
         return lastSunday;
     }
+
     /**
      * get the current dates for the week
      * get most recent sunday and upcoming saturday
@@ -218,10 +274,78 @@ public class EmployerScheduleActivity extends AppCompatActivity {
     private void setCurrentWeek(){
         Date current = new Date();
         String formattedDate = dayOfWeek.format(current);
-        employerDisplayedWeekTextView.setText(formattedDate);
+        displayedWeekTextView.setText(formattedDate);
         String lastSunday = getMostRecentSunday();
         String thisComingSaturday = getUpcomingSaturday();
-        employerDisplayedWeekTextView.setText(lastSunday + "  -  " + thisComingSaturday);
+        displayedWeekTextView.setText(lastSunday + "  -  " + thisComingSaturday);
+        selectedSunday = lastSunday;
     }
 
+    /**
+     * get the current schedule for the whole week from the
+     * selected Sunday.
+     */
+    private void setSchedule(){
+        try {
+            Date d = dayOfWeek.parse(selectedSunday);
+            selectedSunday = sdf.format(d);
+            tempCalendar.setTime(d);
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedMonday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedTuesday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedWednesday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedThursday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedFriday = sdf.format(tempCalendar.getTime());
+            tempCalendar.add(Calendar.DAY_OF_YEAR,1);
+            selectedSaturday = sdf.format(tempCalendar.getTime());
+        }
+        catch(ParseException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * instantiate the firebase components
+     */
+    private void instantiateFirebase(){
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        ref = FirebaseDatabase.getInstance().getReference("Shifts");
+        uid = fbUser.getUid();
+    }
+
+    private void setShiftView(DataSnapshot dataSnapshot, String selectedDate, TextView dateTextView, String dayOfWeek){
+        String userShift = uid + "@" + selectedDate;
+        if (dataSnapshot.hasChild(userShift)){
+            String startTime = dataSnapshot.child(userShift).child("Start Time").getValue().toString();
+            String endTime = dataSnapshot.child(userShift).child("End Time").getValue().toString();
+            dateTextView.setText(dayOfWeek + ": " + startTime + " to " + endTime);
+        } else {
+            dateTextView.setText(dayOfWeek + ": No shift");
+        }
+    }
+    /**
+     * instantiate the value event listener to get all schedule time for a given week
+     * for the current user and attach it to the corresponding text view
+     */
+    private void instantiateValueEventListener(){
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                setShiftView(dataSnapshot, selectedSunday, sundayTextView, "Sunday");
+                setShiftView(dataSnapshot, selectedMonday, mondayTextView, "Monday");
+                setShiftView(dataSnapshot, selectedTuesday, tuesdayTextView, "Tuesday");
+                setShiftView(dataSnapshot, selectedWednesday, wednesdayTextView, "Wednesday");
+                setShiftView(dataSnapshot, selectedThursday, thursdayTextView, "Thursday");
+                setShiftView(dataSnapshot, selectedFriday, fridayTextView, "Friday");
+                setShiftView(dataSnapshot, selectedSaturday, saturdayTextView, "Saturday");
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        ref.addListenerForSingleValueEvent(valueEventListener);
+    }
 }

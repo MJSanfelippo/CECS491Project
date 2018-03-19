@@ -2,27 +2,13 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cecs491.android.csulb.edu.cecs491project.EmployerScheduleActivity"
-    android:id="@+id/relativeLayout">
-
-    <TextView
-        android:id="@+id/employerTextView"
-        android:layout_width="198dp"
-        android:layout_height="52dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="130dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    tools:context="cecs491.android.csulb.edu.cecs491project.EmployerScheduleActivity">
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigationEmployer"
+        android:id="@+id/navigation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="0dp"
@@ -31,66 +17,152 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/employer_nav_menu" />
+        app:menu="@menu/menu_nav" />
 
     <TextView
-        android:id="@+id/employerScheduleTextView"
-        android:layout_width="254dp"
-        android:layout_height="240dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/employerDisplayedWeekTextView"
+        android:id="@+id/displayedWeekTextView"
         android:layout_width="172dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="32dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/employerScheduleTextView"
+        android:gravity="center"
+        android:text="Date"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/sundayTextView"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/employerTextView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/employerBackButton"
+        android:id="@+id/backButton"
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="BACK"
-        app:layout_constraintBottom_toBottomOf="@+id/employerDisplayedWeekTextView"
-        app:layout_constraintEnd_toStartOf="@+id/employerDisplayedWeekTextView"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/displayedWeekTextView"
+        app:layout_constraintEnd_toStartOf="@+id/displayedWeekTextView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/employerDisplayedWeekTextView"
+        app:layout_constraintTop_toTopOf="@+id/displayedWeekTextView"
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/employerForwardButton"
+        android:id="@+id/forwardButton"
         android:layout_width="0dp"
         android:layout_height="49dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:text="FWRD"
-        app:layout_constraintBottom_toBottomOf="@+id/employerDisplayedWeekTextView"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/displayedWeekTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/employerDisplayedWeekTextView"
-        app:layout_constraintTop_toTopOf="@+id/employerDisplayedWeekTextView"
+        app:layout_constraintStart_toEndOf="@+id/displayedWeekTextView"
+        app:layout_constraintTop_toTopOf="@+id/displayedWeekTextView"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/sundayTextView"
+        android:layout_width="327dp"
+        android:layout_height="27dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginRight="92dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginLeft="93dp"
+        android:gravity="center_horizontal"
+        android:text="Sunday: No shift"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/mondayTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displayedWeekTextView" />
+
+    <TextView
+        android:id="@+id/mondayTextView"
+        android:layout_width="327dp"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal"
+        android:text="Monday: No shift"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/tuesdayTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sundayTextView" />
+
+    <TextView
+        android:id="@+id/tuesdayTextView"
+        android:layout_width="327dp"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal"
+        android:text="Tuesday: No shift"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/wednesdayTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mondayTextView" />
+
+    <TextView
+        android:id="@+id/wednesdayTextView"
+        android:layout_width="327dp"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal"
+        android:text="Wednesday: No shift"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/thursdayTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tuesdayTextView" />
+
+    <TextView
+        android:id="@+id/thursdayTextView"
+        android:layout_width="327dp"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal"
+        android:text="Thursday: No shift"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/fridayTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wednesdayTextView" />
+
+    <TextView
+        android:id="@+id/fridayTextView"
+        android:layout_width="327dp"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal"
+        android:text="Friday: No shift"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/saturdayTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thursdayTextView" />
+
+    <TextView
+        android:id="@+id/saturdayTextView"
+        android:layout_width="327dp"
+        android:layout_height="30dp"
+        android:gravity="center_horizontal"
+        android:text="Saturday: No shift"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fridayTextView" />
 
 </android.support.constraint.ConstraintLayout>
