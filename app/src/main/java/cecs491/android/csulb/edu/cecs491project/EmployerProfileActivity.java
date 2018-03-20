@@ -195,4 +195,10 @@ public class EmployerProfileActivity extends AppCompatActivity {
         emailTextView.setText("Email: " + user.getEmail());
         phoneTextView.setText("Phone: " + user.getPhoneNumber());
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        handleNavMenu();
+    }
 }

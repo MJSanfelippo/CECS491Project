@@ -130,4 +130,10 @@ public class EmployerAdminActivity extends AppCompatActivity {
         instantiateLayout();
         handleNavMenu();
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        handleNavMenu();
+    }
 }
