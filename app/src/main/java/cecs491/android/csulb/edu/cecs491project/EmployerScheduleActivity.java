@@ -348,4 +348,10 @@ public class EmployerScheduleActivity extends AppCompatActivity {
         };
         ref.addListenerForSingleValueEvent(valueEventListener);
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        handleNavMenu();
+    }
 }

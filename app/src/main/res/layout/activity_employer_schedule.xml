@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/menu_nav" />
+        app:menu="@menu/employer_nav_menu" />
 
     <TextView
         android:id="@+id/displayedWeekTextView"
@@ -41,7 +41,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="BACK"
+        android:text="BCK"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/displayedWeekTextView"
         app:layout_constraintEnd_toStartOf="@+id/displayedWeekTextView"
@@ -60,7 +60,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
-        android:text="FWRD"
+        android:text="FWD"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/displayedWeekTextView"
         app:layout_constraintEnd_toEndOf="parent"

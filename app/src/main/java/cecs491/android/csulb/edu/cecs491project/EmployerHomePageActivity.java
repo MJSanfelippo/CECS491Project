@@ -221,4 +221,10 @@ public class EmployerHomePageActivity extends AppCompatActivity {
         instantiateValueEventListener();
         handleNavMenu();
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        handleNavMenu();
+    }
 }
