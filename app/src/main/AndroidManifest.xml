@@ -18,15 +18,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LogInActivity"/>
+        <activity android:name=".LogInActivity" />
         <activity android:name=".EmployeeHomePageActivity" />
         <activity android:name=".EmployerHomePageActivity" />
         <activity android:name=".EmployeeScheduleActivity" />
         <activity android:name=".EmployerScheduleActivity" />
         <activity android:name=".NewUserActivity" />
-        <activity android:name=".EmployeeProfileActivity"/>
-        <activity android:name=".EmployerProfileActivity"/>
-        <activity android:name=".EmployerAdminActivity"/>
+        <activity android:name=".EmployeeProfileActivity" />
+        <activity android:name=".EmployerProfileActivity" />
+        <activity android:name=".EmployerAdminActivity" />
+        <activity android:name=".EditEmployeeSelection" />
+        <activity android:name=".EditEmployee"></activity>
     </application>
 
 </manifest>
