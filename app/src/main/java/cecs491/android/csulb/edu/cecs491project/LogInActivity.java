@@ -116,7 +116,13 @@ public class LogInActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userType = dataSnapshot.child("User Type").getValue().toString();
-                goToHomePage();
+                String isDisabled = dataSnapshot.child("Disabled").getValue().toString();
+                if (isDisabled.equalsIgnoreCase("true")){
+                    firebaseAuth.signOut();
+                    Toast.makeText(LogInActivity.this, "User is disabled", Toast.LENGTH_LONG).show();
+                } else {
+                    goToHomePage();
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}

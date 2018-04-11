@@ -227,5 +227,6 @@ public class NewUserActivity extends AppCompatActivity{
         ref.child(uid).child("Last Name").setValue(user.getLastName());
         ref.child(uid).child("Phone").setValue(user.getPhoneNumber());
         ref.child(uid).child("User Type").setValue(user.getUserType());
+        ref.child(uid).child("Disabled").setValue("false");
     }
 }

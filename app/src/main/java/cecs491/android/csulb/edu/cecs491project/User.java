@@ -36,6 +36,11 @@ public class User {
      */
     private String uid;
 
+    private String disabled;
+
+    public User(){
+
+    }
     /**
      * constructor for user not including uid
      * @param email the email of the user
@@ -70,6 +75,13 @@ public class User {
         this.uid = uid;
     }
 
+    public String getDisabled(){
+        return disabled;
+    }
+
+    public void setDisabled(String disabled){
+        this.disabled = disabled;
+    }
     /**
      * gets the uid of the user
      * @return the uid of the user
