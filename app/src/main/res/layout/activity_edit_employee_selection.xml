@@ -25,25 +25,31 @@
         android:orientation="vertical"
 
         >
-    <TextView
-        android:id="@+id/selectEmployee"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Select Employee" />
+        <TextView
+            android:id="@+id/selectEmployee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Select Employee" />
 
-    <Spinner
-        android:id="@+id/employeeNameSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp" />
+        <Spinner
+            android:id="@+id/employeeNameSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp" />
 
-    <Button
-        android:id="@+id/toEditPageButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Go" />
+        <Button
+            android:id="@+id/toEditPageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Go" />
+        <Button
+            android:id="@+id/employeeSelectionBackButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:layout_margin="10dp"/>
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

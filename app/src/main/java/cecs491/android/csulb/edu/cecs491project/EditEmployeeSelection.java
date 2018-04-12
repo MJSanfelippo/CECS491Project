@@ -42,6 +42,8 @@ public class EditEmployeeSelection extends AppCompatActivity {
      */
     private Button editPageButton;
 
+    private Button backButton;
+
     /**
      * the navigation bar
      */
@@ -67,6 +69,14 @@ public class EditEmployeeSelection extends AppCompatActivity {
     private void instantiateLayout() {
         selectEmployee = findViewById(R.id.selectEmployee);
         employeeNameSpinner = findViewById(R.id.employeeNameSpinner);
+        backButton = findViewById(R.id.employeeSelectionBackButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(EditEmployeeSelection.this, EmployerAdminActivity.class);
+                startActivity(i);
+            }
+        });
         editPageButton = findViewById(R.id.toEditPageButton);
         editPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
