@@ -30,7 +30,9 @@
         <activity android:name=".EditEmployeeSelection" />
         <activity android:name=".EditEmployee" />
         <activity android:name=".EditScheduleSelection" />
-        <activity android:name=".EditScheduleActivity"></activity>
+        <activity android:name=".EditScheduleActivity" />
+        <activity android:name=".EditEmployeeShift" />
+        <activity android:name=".AddShift" />
     </application>
 
 </manifest>

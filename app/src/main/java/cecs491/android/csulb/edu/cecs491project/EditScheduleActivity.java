@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -98,13 +99,21 @@ public class EditScheduleActivity extends AppCompatActivity {
     /**
      * the buttons to edit if shift exists
      */
-    private Button sundayEditButton;
-    private Button mondayEditButton;
-    private Button tuesdayEditButton;
-    private Button wednesdayEditButton;
-    private Button thursdayEditButton;
-    private Button fridayEditButton;
-    private Button saturdayEditButton;
+    private ImageButton sundayEditButton;
+    private ImageButton mondayEditButton;
+    private ImageButton tuesdayEditButton;
+    private ImageButton wednesdayEditButton;
+    private ImageButton thursdayEditButton;
+    private ImageButton fridayEditButton;
+    private ImageButton saturdayEditButton;
+
+    private ImageButton sundayAddButton;
+    private ImageButton mondayAddButton;
+    private ImageButton tuesdayAddButton;
+    private ImageButton wednesdayAddButton;
+    private ImageButton thursdayAddButton;
+    private ImageButton fridayAddButton;
+    private ImageButton saturdayAddButton;
 
     /**
      * the user's id
@@ -115,6 +124,9 @@ public class EditScheduleActivity extends AppCompatActivity {
      * instantiate all layout components
      */
     private void instantiateLayout(){
+        Intent i = getIntent();
+        Bundle b = i.getExtras();
+        uid = b.getString("uid");
         displayedWeekTextView = findViewById(R.id.displayedWeekTextView);
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -149,28 +161,27 @@ public class EditScheduleActivity extends AppCompatActivity {
         saturdayTextView = findViewById(R.id.saturdayTextView);
 
         sundayEditButton = findViewById(R.id.sunEdit);
-        sundayEditButton.setVisibility(View.GONE);
-        //todo: setonclick listener stuff?
         mondayEditButton = findViewById(R.id.monEdit);
-        mondayEditButton.setVisibility(View.GONE);
         tuesdayEditButton = findViewById(R.id.tueEdit);
-        tuesdayEditButton.setVisibility(View.GONE);
         wednesdayEditButton = findViewById(R.id.wedEdit);
-        wednesdayEditButton.setVisibility(View.GONE);
         thursdayEditButton = findViewById(R.id.thuEdit);
-        thursdayEditButton.setVisibility(View.GONE);
         fridayEditButton = findViewById(R.id.friEdit);
-        fridayEditButton.setVisibility(View.GONE);
         saturdayEditButton = findViewById(R.id.satEdit);
-        saturdayEditButton.setVisibility(View.GONE);
 
-        
-        navigation = findViewById(R.id.navigation);
+        sundayAddButton = findViewById(R.id.sundayAdd);
+        mondayAddButton = findViewById(R.id.mondayAdd);
+        tuesdayAddButton = findViewById(R.id.tuesdayAdd);
+        wednesdayAddButton = findViewById(R.id.wednesdayAdd);
+        thursdayAddButton = findViewById(R.id.thursdayAdd);
+        fridayAddButton = findViewById(R.id.fridayAdd);
+        saturdayAddButton = findViewById(R.id.saturdayAdd);
+
+        navigation = findViewById(R.id.navigationEmployer);
     }
 
     private void handleNavMenu(){
         Menu menu = navigation.getMenu();
-        MenuItem item = menu.getItem(2);
+        MenuItem item = menu.getItem(4);
         item.setChecked(true);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -178,16 +189,21 @@ public class EditScheduleActivity extends AppCompatActivity {
                 Intent intent;
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        intent = new Intent(EditScheduleActivity.this, EmployeeHomePageActivity.class);
+                        intent = new Intent(EditScheduleActivity.this, EmployerHomePageActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_profile:
-                        intent = new Intent(EditScheduleActivity.this, EmployeeProfileActivity.class);
+                        intent = new Intent(EditScheduleActivity.this, EmployerProfileActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_schedule:
+                        intent = new Intent(EditScheduleActivity.this, EmployerScheduleActivity.class);
                         return true;
                     case R.id.navigation_announcements:
+                        return true;
+                    case R.id.navigation_admin:
+                        intent = new Intent(EditScheduleActivity.this, EmployerAdminActivity.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;
@@ -212,7 +228,8 @@ public class EditScheduleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_employee_schedule);
+        setContentView(R.layout.activity_edit_schedule);
+
         instantiateLayout();
         handleNavMenu();
         instantiateCalendarComponents();
@@ -335,19 +352,20 @@ public class EditScheduleActivity extends AppCompatActivity {
      * instantiate the firebase components
      */
     private void instantiateFirebase(){
-        fbUser = FirebaseAuth.getInstance().getCurrentUser();
         ref = FirebaseDatabase.getInstance().getReference("Shifts");
-        uid = fbUser.getUid();
     }
 
-    private void setShiftView(DataSnapshot dataSnapshot, String selectedDate, TextView dateTextView, String dayOfWeek){
+    private boolean setShiftView(DataSnapshot dataSnapshot, String selectedDate, TextView dateTextView, String dayOfWeek){
         String userShift = uid + "@" + selectedDate;
         if (dataSnapshot.hasChild(userShift)){
             String startTime = dataSnapshot.child(userShift).child("Start Time").getValue().toString();
             String endTime = dataSnapshot.child(userShift).child("End Time").getValue().toString();
             dateTextView.setText(dayOfWeek + ": " + startTime + " to " + endTime);
+
+            return true;
         } else {
             dateTextView.setText(dayOfWeek + ": No shift");
+            return false;
         }
     }
     /**
@@ -358,13 +376,20 @@ public class EditScheduleActivity extends AppCompatActivity {
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                setShiftView(dataSnapshot, selectedSunday, sundayTextView, "Sunday");
-                setShiftView(dataSnapshot, selectedMonday, mondayTextView, "Monday");
-                setShiftView(dataSnapshot, selectedTuesday, tuesdayTextView, "Tuesday");
-                setShiftView(dataSnapshot, selectedWednesday, wednesdayTextView, "Wednesday");
-                setShiftView(dataSnapshot, selectedThursday, thursdayTextView, "Thursday");
-                setShiftView(dataSnapshot, selectedFriday, fridayTextView, "Friday");
-                setShiftView(dataSnapshot, selectedSaturday, saturdayTextView, "Saturday");
+                boolean sunday = setShiftView(dataSnapshot, selectedSunday, sundayTextView, "Sunday");
+                boolean monday = setShiftView(dataSnapshot, selectedMonday, mondayTextView, "Monday");
+                boolean tuesday = setShiftView(dataSnapshot, selectedTuesday, tuesdayTextView, "Tuesday");
+                boolean wednesday = setShiftView(dataSnapshot, selectedWednesday, wednesdayTextView, "Wednesday");
+                boolean thursday = setShiftView(dataSnapshot, selectedThursday, thursdayTextView, "Thursday");
+                boolean friday = setShiftView(dataSnapshot, selectedFriday, fridayTextView, "Friday");
+                boolean saturday = setShiftView(dataSnapshot, selectedSaturday, saturdayTextView, "Saturday");
+                setVisibility(sunday, sundayEditButton, sundayAddButton);
+                setVisibility(monday, mondayEditButton, mondayAddButton);
+                setVisibility(tuesday, tuesdayEditButton, tuesdayAddButton);
+                setVisibility(wednesday, wednesdayEditButton, wednesdayAddButton);
+                setVisibility(thursday, thursdayEditButton, thursdayAddButton);
+                setVisibility(friday, fridayEditButton, fridayAddButton);
+                setVisibility(saturday, saturdayEditButton, saturdayAddButton);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -372,6 +397,15 @@ public class EditScheduleActivity extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(valueEventListener);
     }
 
+    private void setVisibility(boolean hasShift, ImageButton editButton, ImageButton addButton){
+        if (hasShift){
+            addButton.setVisibility(View.INVISIBLE);
+            editButton.setVisibility(View.VISIBLE);
+        } else {
+            addButton.setVisibility(View.VISIBLE);
+            editButton.setVisibility(View.INVISIBLE);
+        }
+    }
     /**
      *
      * @param textView

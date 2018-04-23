@@ -63,6 +63,8 @@ public class EmployerAdminActivity extends AppCompatActivity {
         shiftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(EmployerAdminActivity.this, EditScheduleSelection.class);
+                startActivity(i);
 
             }
         });

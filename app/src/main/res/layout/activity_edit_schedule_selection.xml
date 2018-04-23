@@ -26,26 +26,26 @@
 
         >
         <TextView
-            android:id="@+id/selectEmployee"
+            android:id="@+id/selectEmployeeSchedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Select Employee" />
 
         <Spinner
-            android:id="@+id/employeeNameSpinner"
+            android:id="@+id/employeeNameSpinnerSchedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="25dp" />
 
         <Button
-            android:id="@+id/toEditPageButton"
+            android:id="@+id/toEditPageButtonSchedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="Go" />
         <Button
-            android:id="@+id/employeeSelectionBackButton"
+            android:id="@+id/employeeSelectionBackButtonSchedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Back"

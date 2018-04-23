@@ -82,6 +82,19 @@ public class Shifts {
         this.lastName = lastName;
     }
 
+    public Shifts(String startTime, String endTime, String firstName, String lastName, String date){
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.date = date;
+        this.firstName = firstName;
+        this.lastName = lastName;
+
+        this.realStartTime = " ";
+        this.realEndTime = " ";
+        this.breakStart = " ";
+        this.breakEnd =  " ";
+
+    }
     /**
      * gets the start time
      * @return the start time

@@ -64,9 +64,9 @@ public class EditScheduleSelection extends AppCompatActivity {
         return b;
     }
     private void instantiateLayout() {
-        selectEmployee = findViewById(R.id.selectEmployee);
-        employeeNameSpinner = findViewById(R.id.employeeNameSpinner);
-        backButton = findViewById(R.id.employeeSelectionBackButton);
+        selectEmployee = findViewById(R.id.selectEmployeeSchedule);
+        employeeNameSpinner = findViewById(R.id.employeeNameSpinnerSchedule);
+        backButton = findViewById(R.id.employeeSelectionBackButtonSchedule);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,12 +74,12 @@ public class EditScheduleSelection extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        editPageButton = findViewById(R.id.toEditPageButton);
+        editPageButton = findViewById(R.id.toEditPageButtonSchedule);
         editPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User user = getUserFromSpinner();
-                Intent i = new Intent(EditScheduleSelection.this, EditEmployee.class); //TODO: I think this needs to be changed?
+                Intent i = new Intent(EditScheduleSelection.this, EditScheduleActivity.class); //TODO: I think this needs to be changed?
                 Bundle b = getBundleFromUser(user);
                 i.putExtras(b);
                 startActivity(i);
@@ -92,7 +92,7 @@ public class EditScheduleSelection extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_employee_selection);
+        setContentView(R.layout.activity_edit_schedule_selection);
 
         instantiateLayout();
         instantiateFirebase();
