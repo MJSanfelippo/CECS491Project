@@ -11,8 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AddShift extends AppCompatActivity
 {
@@ -33,26 +38,29 @@ public class AddShift extends AppCompatActivity
 
     private FirebaseDatabase db;
     private DatabaseReference shiftsRef;
+    private DatabaseReference usersRef;
 
-    private String date;
+    private String realDate;
+    private String prettyDate;
     private String dayOfWeek;
     private String firstName;
     private String lastName;
     private String uid;
 
+    private ValueEventListener valueEventListenerUser;
+
     private void getInfo(){
         Intent i = getIntent();
         Bundle b = i.getExtras();
-        date = b.getString("Date");
+        realDate = b.getString("Real Date");
+        prettyDate = b.getString("Pretty Date");
         dayOfWeek = b.getString("Day of Week");
-        firstName = b.getString("First Name");
-        lastName = b.getString("Last Name");
         uid = b.getString("uid");
     }
 
     private void instantiateLayout(){
         dateTextView = findViewById(R.id.dateTextView);
-        dateTextView.setText("Date: " + date);
+        dateTextView.setText("Date: " + prettyDate);
         dayOfWeekTextView = findViewById(R.id.dayOfWeekTextView);
         dayOfWeekTextView.setText("Day: " + dayOfWeek);
 
@@ -62,12 +70,16 @@ public class AddShift extends AppCompatActivity
         addButton = findViewById(R.id.addButton);
         cancelButton = findViewById(R.id.cancelButton);
 
-        navigation = findViewById(R.id.navigationEmployer);
+        navigation = findViewById(R.id.navigation);
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                Intent i = new Intent(AddShift.this, EditScheduleActivity.class);
+                Bundle b = new Bundle();
+                b.putString("uid", uid);
+                i.putExtras(b);
+                startActivity(i);
             }
         });
 
@@ -77,16 +89,19 @@ public class AddShift extends AppCompatActivity
                 String startTime = startTimeEditTextView.getText().toString().trim();
                 String endTime = endTimeEditTextView.getText().toString().trim();
                 // maybe do some checking?
-                Shifts s = new Shifts(startTime, endTime, firstName, lastName, date);
+                Shifts s = new Shifts(startTime, endTime, firstName, lastName, realDate);
                 addShiftToDatabase(s);
-                Intent i = new Intent(AddShift.this, EmployerAdminActivity.class);
+                Intent i = new Intent(AddShift.this, EditScheduleActivity.class);
+                Bundle b = new Bundle();
+                b.putString("uid", uid);
+                i.putExtras(b);
                 startActivity(i);
             }
         });
     }
 
     private void addShiftToDatabase(Shifts shift){
-        String id = uid + "@" + date;
+        String id = uid + "@" + realDate;
         shiftsRef.child(id).child("Date").setValue(shift.getDate());
         shiftsRef.child(id).child("End Break Time").setValue(shift.getBreakEnd());
         shiftsRef.child(id).child("End Time").setValue(shift.getEndTime());
@@ -120,12 +135,14 @@ public class AddShift extends AppCompatActivity
                         startActivity(intent);
                         return true;
                     case R.id.navigation_schedule:
-                        intent = new Intent(AddShift.this, EmployerProfileActivity.class);
+                        intent = new Intent(AddShift.this, EmployerScheduleActivity.class);
                         startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
                         return true;
                     case R.id.navigation_admin:
+                        intent = new Intent(AddShift.this, EmployerAdminActivity.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;
@@ -136,6 +153,7 @@ public class AddShift extends AppCompatActivity
     private void instantiateFirebase(){
         db = FirebaseDatabase.getInstance();
         shiftsRef = db.getReference("Shifts");
+        usersRef = db.getReference("Users");
     }
     /**
      * create the activity
@@ -149,7 +167,24 @@ public class AddShift extends AppCompatActivity
         getInfo();
         instantiateLayout();
         instantiateFirebase();
+        instantiateValueEventListener();
         handleNavMenu();
+    }
+
+    private void instantiateValueEventListener(){
+        valueEventListenerUser = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                firstName = dataSnapshot.child("First Name").getValue().toString();
+                lastName = dataSnapshot.child("Last Name").getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        usersRef.child(uid).addListenerForSingleValueEvent(valueEventListenerUser);
     }
 
 }

@@ -115,6 +115,10 @@ public class EditScheduleActivity extends AppCompatActivity {
     private ImageButton fridayAddButton;
     private ImageButton saturdayAddButton;
 
+    private ImageButton[] editButtonList;
+    private ImageButton[] addButtonList;
+    private String[] daysOfWeek;
+
     /**
      * the user's id
      */
@@ -124,8 +128,8 @@ public class EditScheduleActivity extends AppCompatActivity {
      * instantiate all layout components
      */
     private void instantiateLayout(){
-        Intent i = getIntent();
-        Bundle b = i.getExtras();
+        Intent intent = getIntent();
+        Bundle b = intent.getExtras();
         uid = b.getString("uid");
         displayedWeekTextView = findViewById(R.id.displayedWeekTextView);
         backButton = findViewById(R.id.backButton);
@@ -177,6 +181,54 @@ public class EditScheduleActivity extends AppCompatActivity {
         saturdayAddButton = findViewById(R.id.saturdayAdd);
 
         navigation = findViewById(R.id.navigationEmployer);
+
+        daysOfWeek = new String[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        editButtonList = new ImageButton[]{sundayEditButton, mondayEditButton, tuesdayEditButton, wednesdayEditButton, thursdayEditButton, fridayEditButton, saturdayEditButton};
+        addButtonList = new ImageButton[]{sundayAddButton, mondayAddButton, tuesdayAddButton, wednesdayAddButton, thursdayAddButton, fridayAddButton, saturdayAddButton};
+
+        for (int i=0; i<7; i++){
+            final int localI = i;
+            editButtonList[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(EditScheduleActivity.this, EditEmployeeShift.class);
+                    Bundle b = new Bundle();
+                    b.putString("Pretty Date", getPrettyDate(localI));
+                    b.putString("Real Date", getRealDate(localI));
+                    b.putString("uid", uid);
+                    b.putString("Day of Week", daysOfWeek[localI]);
+                    intent.putExtras(b);
+                    startActivity(intent);
+                }
+            });
+            addButtonList[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(EditScheduleActivity.this, AddShift.class);
+                    Bundle b = new Bundle();
+                    b.putString("uid", uid);
+                    b.putString("Pretty Date", getPrettyDate(localI));
+                    b.putString("Real Date", getRealDate(localI));
+                    b.putString("Day of Week", daysOfWeek[localI]);
+                    intent.putExtras(b);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    private String getPrettyDate(int day){
+        calendar.add(Calendar.DAY_OF_YEAR, day-6);
+        String date = dayOfWeek.format(calendar.getTime());
+        calendar.add(Calendar.DAY_OF_YEAR, -(day-6));
+        return date;
+    }
+
+    private String getRealDate(int day){
+        calendar.add(Calendar.DAY_OF_YEAR, day-6);
+        String date = sdf.format(calendar.getTime());
+        calendar.add(Calendar.DAY_OF_YEAR, -(day-6));
+        return date;
     }
 
     private void handleNavMenu(){
@@ -404,18 +456,6 @@ public class EditScheduleActivity extends AppCompatActivity {
         } else {
             addButton.setVisibility(View.VISIBLE);
             editButton.setVisibility(View.INVISIBLE);
-        }
-    }
-    /**
-     *
-     * @param textView
-     * @param button
-     */
-//todo: something like this??
-    private void setButtonVisibility(TextView textView, Button button) {
-        String test = textView.toString();
-        if (!test.endsWith("No Shift")) {
-            button.setVisibility(View.VISIBLE);
         }
     }
 
