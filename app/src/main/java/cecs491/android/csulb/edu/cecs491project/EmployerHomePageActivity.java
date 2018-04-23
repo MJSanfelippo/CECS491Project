@@ -113,11 +113,21 @@ public class EmployerHomePageActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
-                    breakButton.setTextOn("Start break");
-                    clockInButton.setEnabled(true);
-                } else {
-                    breakButton.setTextOff("Stop break");
+                    breakButton.setTextOn("Stop break");
                     clockInButton.setEnabled(false);
+                    String timestamp = new SimpleDateFormat("HH:mm").format(new Date());
+                    DatabaseReference shiftRef = ref.child(possibleShiftId);
+                    Map<String, Object> shiftUpdate = new HashMap<>();
+                    shiftUpdate.put("Start Break Time", timestamp);
+                    shiftRef.updateChildren(shiftUpdate);
+                } else {
+                    breakButton.setTextOff("Start break");
+                    clockInButton.setEnabled(true);
+                    String timestamp = new SimpleDateFormat("HH:mm").format(new Date());
+                    DatabaseReference shiftRef = ref.child(possibleShiftId);
+                    Map<String, Object> shiftUpdate = new HashMap<>();
+                    shiftUpdate.put("End Break Time", timestamp);
+                    shiftRef.updateChildren(shiftUpdate);
                 }
             }
         });
