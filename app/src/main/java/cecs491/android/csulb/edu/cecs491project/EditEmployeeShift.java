@@ -35,6 +35,7 @@ public class EditEmployeeShift extends AppCompatActivity {
 
     private Button saveButton;
     private Button cancelButton;
+    private Button deleteButton;
 
     private String realDate;
     private String prettyDate;
@@ -48,6 +49,14 @@ public class EditEmployeeShift extends AppCompatActivity {
     private void instantiateFirebase(){
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("Shifts");
+    }
+
+    private void goToEditScheduleActivity(){
+        Intent i = new Intent(EditEmployeeShift.this, EditScheduleActivity.class);
+        Bundle b = new Bundle();
+        b.putString("uid", uid);
+        i.putExtras(b);
+        startActivity(i);
     }
     private void instantiateLayout(){
         Intent intent = getIntent();
@@ -67,25 +76,27 @@ public class EditEmployeeShift extends AppCompatActivity {
                 shiftUpdate.put("Start Time", startTime);
                 shiftUpdate.put("End Time", endTime);
                 shiftRef.updateChildren(shiftUpdate);
-                Intent i = new Intent(EditEmployeeShift.this, EditScheduleActivity.class);
-                Bundle b = new Bundle();
-                b.putString("uid", uid);
-                i.putExtras(b);
-                startActivity(i);
+                goToEditScheduleActivity();
             }
         });
         cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(EditEmployeeShift.this, EditScheduleActivity.class);
-                Bundle b = new Bundle();
-                b.putString("uid", uid);
-                i.putExtras(b);
-                startActivity(i);
+                goToEditScheduleActivity();
             }
         });
 
+        deleteButton = findViewById(R.id.deleteShiftButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = uid + "@" + realDate;
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Shifts").child(id);
+                ref.removeValue();
+                goToEditScheduleActivity();
+            }
+        });
         realDate = b.getString("Real Date");
         prettyDate =  b.getString("Pretty Date");
         String day = b.getString("Day of Week");
