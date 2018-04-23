@@ -28,7 +28,9 @@
         <activity android:name=".EmployerProfileActivity" />
         <activity android:name=".EmployerAdminActivity" />
         <activity android:name=".EditEmployeeSelection" />
-        <activity android:name=".EditEmployee"></activity>
+        <activity android:name=".EditEmployee" />
+        <activity android:name=".EditScheduleSelection" />
+        <activity android:name=".EditScheduleActivity"></activity>
     </application>
 
 </manifest>
