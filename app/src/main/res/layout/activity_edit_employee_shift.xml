@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="423dp"
+        android:layout_height="37dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="23dp"
+        android:text="Date:"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/dayOfWeekTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assignedByEditText" />
+
+    <TextView
+        android:id="@+id/dayOfWeekTextView"
+        android:layout_width="423dp"
+        android:layout_height="37dp"
+        android:layout_marginBottom="51dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="29dp"
+        android:text="Day of the Week:"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/startTimeEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+
+    <EditText
+        android:id="@+id/assignedByEditText"
+        android:layout_width="423dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="23dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="48dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Assigned By"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/dateTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="306dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="54dp"
+        android:layout_marginEnd="106dp"
+        android:layout_marginStart="107dp"
+        android:text="Cancel"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="306dp"
+        android:layout_height="48dp"
+        android:text="Save"
+        android:textSize="20dp"
+        tools:layout_editor_absoluteX="106dp"
+        tools:layout_editor_absoluteY="539dp" />
+
+    <EditText
+        android:id="@+id/startTimeEditText"
+        android:layout_width="423dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="9dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="51dp"
+        android:ems="10"
+        android:inputType="time"
+        android:text="Start Time"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/endTimeEditText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dayOfWeekTextView" />
+
+    <EditText
+        android:id="@+id/endTimeEditText"
+        android:layout_width="423dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="53dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:inputType="time"
+        android:text="End Time"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/saveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startTimeEditText" />
+
+</android.support.constraint.ConstraintLayout>
