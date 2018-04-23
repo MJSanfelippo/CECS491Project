@@ -151,6 +151,20 @@ public class EditScheduleActivity extends AppCompatActivity {
         sundayEditButton = findViewById(R.id.sunEdit);
         sundayEditButton.setVisibility(View.GONE);
         //todo: setonclick listener stuff?
+        mondayEditButton = findViewById(R.id.monEdit);
+        mondayEditButton.setVisibility(View.GONE);
+        tuesdayEditButton = findViewById(R.id.tueEdit);
+        tuesdayEditButton.setVisibility(View.GONE);
+        wednesdayEditButton = findViewById(R.id.wedEdit);
+        wednesdayEditButton.setVisibility(View.GONE);
+        thursdayEditButton = findViewById(R.id.thuEdit);
+        thursdayEditButton.setVisibility(View.GONE);
+        fridayEditButton = findViewById(R.id.friEdit);
+        fridayEditButton.setVisibility(View.GONE);
+        saturdayEditButton = findViewById(R.id.satEdit);
+        saturdayEditButton.setVisibility(View.GONE);
+
+        
         navigation = findViewById(R.id.navigation);
     }
 
