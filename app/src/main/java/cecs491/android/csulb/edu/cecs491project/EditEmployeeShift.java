@@ -13,9 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,9 +47,30 @@ public class EditEmployeeShift extends AppCompatActivity {
     private FirebaseDatabase db;
     private DatabaseReference ref;
 
+    private ValueEventListener valueEventListener;
     private String uid;
+    private String shiftId;
+    private String startTime;
+    private String endTime;
 
 
+    private void instantiateValueEventListener(){
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                startTime = dataSnapshot.child(shiftId).child("Start Time").getValue().toString().trim();
+                endTime = dataSnapshot.child(shiftId).child("End Time").getValue().toString().trim();
+                startTimeEditTextView.setText(startTime);
+                endTimeEditTextView.setText(endTime);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        ref.addListenerForSingleValueEvent(valueEventListener);
+    }
     private void instantiateFirebase(){
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("Shifts");
@@ -58,6 +83,11 @@ public class EditEmployeeShift extends AppCompatActivity {
         i.putExtras(b);
         startActivity(i);
     }
+
+    private boolean isTimeValid(String time){
+        return time.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$");
+    }
+
     private void instantiateLayout(){
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -68,15 +98,18 @@ public class EditEmployeeShift extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = uid + "@" + realDate;
-                DatabaseReference shiftRef = ref.child(id);
+                DatabaseReference shiftRef = ref.child(shiftId);
                 Map<String, Object> shiftUpdate = new HashMap<>();
-                String startTime = startTimeEditTextView.getText().toString().trim();
-                String endTime = endTimeEditTextView.getText().toString().trim();
-                shiftUpdate.put("Start Time", startTime);
-                shiftUpdate.put("End Time", endTime);
-                shiftRef.updateChildren(shiftUpdate);
-                goToEditScheduleActivity();
+                startTime = startTimeEditTextView.getText().toString().trim();
+                endTime = endTimeEditTextView.getText().toString().trim();
+                if (isTimeValid(startTime) && isTimeValid(endTime)){
+                    shiftUpdate.put("Start Time", startTime);
+                    shiftUpdate.put("End Time", endTime);
+                    shiftRef.updateChildren(shiftUpdate);
+                    goToEditScheduleActivity();
+                } else {
+                    Toast.makeText(EditEmployeeShift.this, "Times are not valid", Toast.LENGTH_LONG).show();
+                }
             }
         });
         cancelButton = findViewById(R.id.cancelButton);
@@ -94,12 +127,14 @@ public class EditEmployeeShift extends AppCompatActivity {
                 String id = uid + "@" + realDate;
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Shifts").child(id);
                 ref.removeValue();
+                Toast.makeText(EditEmployeeShift.this, "Shift deleted", Toast.LENGTH_SHORT).show();
                 goToEditScheduleActivity();
             }
         });
         realDate = b.getString("Real Date");
         prettyDate =  b.getString("Pretty Date");
         String day = b.getString("Day of Week");
+        shiftId = uid + "@" + realDate;
         dateTextView = findViewById(R.id.dateTextView);
         dateTextView.setText("Date: " + prettyDate);
         dayOfWeekTextView = findViewById(R.id.dayOfWeekTextView);
@@ -114,6 +149,7 @@ public class EditEmployeeShift extends AppCompatActivity {
 
         instantiateLayout();
         instantiateFirebase();
+        instantiateValueEventListener();
         handleNavMenu();
     }
 

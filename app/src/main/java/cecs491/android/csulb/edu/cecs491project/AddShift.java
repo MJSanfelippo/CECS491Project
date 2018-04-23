@@ -88,18 +88,27 @@ public class AddShift extends AppCompatActivity
             public void onClick(View view) {
                 String startTime = startTimeEditTextView.getText().toString().trim();
                 String endTime = endTimeEditTextView.getText().toString().trim();
-                // maybe do some checking?
-                Shifts s = new Shifts(startTime, endTime, firstName, lastName, realDate);
-                addShiftToDatabase(s);
-                Intent i = new Intent(AddShift.this, EditScheduleActivity.class);
-                Bundle b = new Bundle();
-                b.putString("uid", uid);
-                i.putExtras(b);
-                startActivity(i);
+                if (isTimeValid(startTime) && isTimeValid(endTime)){
+                    Shifts s = new Shifts(startTime, endTime, firstName, lastName, realDate);
+                    addShiftToDatabase(s);
+                    goToEditSchedule();
+                } else {
+                    Toast.makeText(AddShift.this, "Times are not valid", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
 
+    private void goToEditSchedule(){
+        Intent i = new Intent(AddShift.this, EditScheduleActivity.class);
+        Bundle b = new Bundle();
+        b.putString("uid", uid);
+        i.putExtras(b);
+        startActivity(i);
+    }
+    private boolean isTimeValid(String time){
+        return time.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$");
+    }
     private void addShiftToDatabase(Shifts shift){
         String id = uid + "@" + realDate;
         shiftsRef.child(id).child("Date").setValue(shift.getDate());
