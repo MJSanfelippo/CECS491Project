@@ -27,28 +27,89 @@ public class AddShift extends AppCompatActivity
      */
     private BottomNavigationView navigation;
 
+    /**
+     * the text view for the date
+     */
     private TextView dateTextView;
+
+    /**
+     * the text view for the day of the week
+     */
     private TextView dayOfWeekTextView;
 
+    /**
+     * the edit text for the start time
+     */
     private EditText startTimeEditTextView;
+
+    /**
+     * the edit text for the
+     */
     private EditText endTimeEditTextView;
 
+    /**
+     * the button to add a shift
+     */
     private Button addButton;
+
+    /**
+     * the button to cancel the operation
+     */
     private Button cancelButton;
 
+    /**
+     * instance of a firebase database
+     */
     private FirebaseDatabase db;
+
+    /**
+     * instance of a database reference for shifts
+     */
     private DatabaseReference shiftsRef;
+
+    /**
+     * instance of a database reference for users
+     */
     private DatabaseReference usersRef;
 
+    /**
+     * the real date in the form MMddYYYY
+     */
     private String realDate;
+
+    /**
+     * the pretty date in the form MM/dd/YYYY
+     */
     private String prettyDate;
+
+    /**
+     * the day of the week
+     */
     private String dayOfWeek;
+
+    /**
+     * the first name of the person
+     */
     private String firstName;
+
+    /**
+     * the last name of the person
+     */
     private String lastName;
+
+    /**
+     * the uid of the person
+     */
     private String uid;
 
+    /**
+     * value event listener to get values from database
+     */
     private ValueEventListener valueEventListenerUser;
 
+    /**
+     * get the info from the previous intent's bundle
+     */
     private void getInfo(){
         Intent i = getIntent();
         Bundle b = i.getExtras();
@@ -58,6 +119,9 @@ public class AddShift extends AppCompatActivity
         uid = b.getString("uid");
     }
 
+    /**
+     * instantiate the layout including button on click listeners
+     */
     private void instantiateLayout(){
         dateTextView = findViewById(R.id.dateTextView);
         dateTextView.setText("Date: " + prettyDate);
@@ -72,6 +136,15 @@ public class AddShift extends AppCompatActivity
 
         navigation = findViewById(R.id.navigation);
 
+        setOnClickListeners();
+    }
+
+    /**
+     * sets the on click listeners for the buttons
+     * if they cancel, simply go back to previous activity
+     * if they add it, put it in the database after checking that it is valid
+     */
+    private void setOnClickListeners(){
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,7 +171,9 @@ public class AddShift extends AppCompatActivity
             }
         });
     }
-
+    /**
+     * Intent to go to the edit schedule activity, passing in uid
+     */
     private void goToEditSchedule(){
         Intent i = new Intent(AddShift.this, EditScheduleActivity.class);
         Bundle b = new Bundle();
@@ -106,9 +181,20 @@ public class AddShift extends AppCompatActivity
         i.putExtras(b);
         startActivity(i);
     }
+
+    /**
+     * validation checking for a time
+     * @param time the time value in question
+     * @return true if it's valid, false otherwise
+     */
     private boolean isTimeValid(String time){
         return time.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$");
     }
+
+    /**
+     * adds the shift to the database with the id of uid@date
+     * @param shift the shift to be added
+     */
     private void addShiftToDatabase(Shifts shift){
         String id = uid + "@" + realDate;
         shiftsRef.child(id).child("Date").setValue(shift.getDate());
@@ -159,6 +245,9 @@ public class AddShift extends AppCompatActivity
         );
     }
 
+    /**
+     * instantiate all firebase components
+     */
     private void instantiateFirebase(){
         db = FirebaseDatabase.getInstance();
         shiftsRef = db.getReference("Shifts");
@@ -180,6 +269,9 @@ public class AddShift extends AppCompatActivity
         handleNavMenu();
     }
 
+    /**
+     * gets the first and last name of the given uid
+     */
     private void instantiateValueEventListener(){
         valueEventListenerUser = new ValueEventListener() {
             @Override
