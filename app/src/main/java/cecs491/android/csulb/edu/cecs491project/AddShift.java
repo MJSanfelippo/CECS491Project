@@ -136,6 +136,15 @@ public class AddShift extends AppCompatActivity
 
         navigation = findViewById(R.id.navigation);
 
+        setOnClickListeners();
+    }
+
+    /**
+     * sets the on click listeners for the buttons
+     * if they cancel, simply go back to previous activity
+     * if they add it, put it in the database after checking that it is valid
+     */
+    private void setOnClickListeners(){
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,7 +171,6 @@ public class AddShift extends AppCompatActivity
             }
         });
     }
-
     /**
      * Intent to go to the edit schedule activity, passing in uid
      */

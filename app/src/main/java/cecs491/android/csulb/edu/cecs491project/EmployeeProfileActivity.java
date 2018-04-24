@@ -95,6 +95,16 @@ public class EmployeeProfileActivity extends AppCompatActivity {
         emailTextView = findViewById(R.id.profileEmail);
         phoneTextView = findViewById(R.id.profilePhone);
         signOutButton = findViewById(R.id.signOutButton);
+        navigation = findViewById(R.id.navigation);
+
+        setOnClickListeners();
+    }
+
+    /**
+     * set the on click listeners
+     * if they press sign out, sign them out and take them to the log in activity
+     */
+    private void setOnClickListeners(){
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,9 +113,7 @@ public class EmployeeProfileActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        navigation = findViewById(R.id.navigation);
     }
-
     /**
      * instantiate all firebase components
      */
@@ -193,6 +201,9 @@ public class EmployeeProfileActivity extends AppCompatActivity {
         phoneTextView.setText("Phone: " + user.getPhoneNumber());
     }
 
+    /**
+     * I literally don't remember why I need this
+     */
     @Override
     protected void onResume(){
         super.onResume();

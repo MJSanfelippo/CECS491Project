@@ -89,6 +89,16 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         clockInButton = findViewById(R.id.toggleClockButton);
         todaysShift = findViewById(R.id.DailyShift);
         breakButton = findViewById(R.id.breakButton);
+
+        setOnClickListeners();
+    }
+
+    /**
+     * set the on click listeners
+     * if they click on clock in, set its text to clock out and enable the break button
+     * if they click on start break, set its text to end break and disable the clock out button
+     */
+    private void setOnClickListeners(){
         clockInButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -112,6 +122,7 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
                 }
             }
         });
+
         breakButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -135,7 +146,6 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
             }
         });
     }
-
     /**
      * instantiate all the firebase componenets
      */
@@ -230,6 +240,9 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         handleNavMenu();
     }
 
+    /**
+     * why did I need this again?
+     */
     @Override
     protected void onResume(){
         super.onResume();

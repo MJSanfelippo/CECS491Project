@@ -30,30 +30,99 @@ import java.util.Map;
 
 public class EditEmployeeShift extends AppCompatActivity {
 
+    /**
+     * the nav bar
+     */
     private BottomNavigationView navigation;
+
+    /**
+     * the date text view
+     */
     private TextView dateTextView;
+
+    /**
+     * the day of the week text view
+     */
     private TextView dayOfWeekTextView;
 
+    /**
+     * the start time edit text view
+     */
     private EditText startTimeEditTextView;
+
+    /**
+     * the end time edit text view
+     */
     private EditText endTimeEditTextView;
 
+    /**
+     * the save button
+     */
     private Button saveButton;
+
+    /**
+     * the cancel button
+     */
     private Button cancelButton;
+
+    /**
+     * the delete button
+     */
     private Button deleteButton;
 
+    /**
+     * the real date in form MMddYYYY
+     */
     private String realDate;
+
+    /**
+     * the pretty date in form MM/dd/YYYY
+     */
     private String prettyDate;
 
+    /**
+     * the firebase database
+     */
     private FirebaseDatabase db;
+
+    /**
+     * the database reference
+     */
     private DatabaseReference ref;
 
+    /**
+     * the value event listener to get the info from db
+     */
     private ValueEventListener valueEventListener;
+
+    /**
+     * the user's uid
+     */
     private String uid;
+
+    /**
+     * the shift id in form uid@MMddYYYY
+     */
     private String shiftId;
+
+    /**
+     * the shift's start time
+     */
     private String startTime;
+
+    /**
+     * the shift's end time
+     */
     private String endTime;
 
+    /**
+     * the day of the week
+     */
+    private String day;
 
+    /**
+     * instantiate the value event listener, getting the start and end times
+     */
     private void instantiateValueEventListener(){
         valueEventListener = new ValueEventListener() {
             @Override
@@ -71,11 +140,18 @@ public class EditEmployeeShift extends AppCompatActivity {
         };
         ref.addListenerForSingleValueEvent(valueEventListener);
     }
+
+    /**
+     * instantiate the firebase components
+     */
     private void instantiateFirebase(){
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("Shifts");
     }
 
+    /**
+     * Simply go to the edit schedule activity, attaching the uid
+     */
     private void goToEditScheduleActivity(){
         Intent i = new Intent(EditEmployeeShift.this, EditScheduleActivity.class);
         Bundle b = new Bundle();
@@ -84,17 +160,44 @@ public class EditEmployeeShift extends AppCompatActivity {
         startActivity(i);
     }
 
+    /**
+     * checks if it's a valid time
+     * I found this regex online, hasn't failed me yet
+     * @param time the time in question
+     * @return true if it's valid, false otherwise
+     */
     private boolean isTimeValid(String time){
         return time.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$");
     }
 
+    /**
+     * instantiate all layout components
+     */
     private void instantiateLayout(){
-        Intent intent = getIntent();
-        Bundle b = intent.getExtras();
-        uid = b.getString("uid");
         startTimeEditTextView = findViewById(R.id.startTimeEditText);
         endTimeEditTextView = findViewById(R.id.endTimeEditText);
+
         saveButton = findViewById(R.id.saveButton);
+        cancelButton = findViewById(R.id.cancelButton);
+        deleteButton = findViewById(R.id.deleteShiftButton);
+
+        dateTextView = findViewById(R.id.dateTextView);
+        dateTextView.setText("Date: " + prettyDate);
+        dayOfWeekTextView = findViewById(R.id.dayOfWeekTextView);
+        dayOfWeekTextView.setText("Day: " + day);
+
+        navigation = findViewById(R.id.navigation);
+
+        setOnClickListeners();
+    }
+
+    /**
+     * set the on click listeners
+     * the save button should check the validity of the times, and if valid, update the database
+     * delete button deletes the shift from the database
+     * cancel button simply goes back
+     */
+    private void setOnClickListeners(){
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,15 +215,7 @@ public class EditEmployeeShift extends AppCompatActivity {
                 }
             }
         });
-        cancelButton = findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToEditScheduleActivity();
-            }
-        });
 
-        deleteButton = findViewById(R.id.deleteShiftButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,22 +226,37 @@ public class EditEmployeeShift extends AppCompatActivity {
                 goToEditScheduleActivity();
             }
         });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToEditScheduleActivity();
+            }
+        });
+
+    }
+    /**
+     * get the info from the previous activity
+     */
+    private void getInfo(){
+        Bundle b = getIntent().getExtras();
+        uid = b.getString("uid");
         realDate = b.getString("Real Date");
         prettyDate =  b.getString("Pretty Date");
-        String day = b.getString("Day of Week");
+        day = b.getString("Day of Week");
         shiftId = uid + "@" + realDate;
-        dateTextView = findViewById(R.id.dateTextView);
-        dateTextView.setText("Date: " + prettyDate);
-        dayOfWeekTextView = findViewById(R.id.dayOfWeekTextView);
-        dayOfWeekTextView.setText("Day: " + day);
-        navigation = findViewById(R.id.navigation);
     }
 
+    /**
+     * start the activity
+     * @param savedInstanceState the previous activity state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_employee_shift);
 
+        getInfo();
         instantiateLayout();
         instantiateFirebase();
         instantiateValueEventListener();
