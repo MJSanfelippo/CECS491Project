@@ -60,6 +60,18 @@ public class EmployerAdminActivity extends AppCompatActivity {
         employeeButton = findViewById(R.id.editEmployeeButton);
         announcementsButton = findViewById(R.id.editAnnouncementsButton);
 
+        navigation = findViewById(R.id.navigationEmployer);
+
+        setOnClickListeners();
+    }
+
+    /**
+     * set the on click listeners
+     * if they press shift, take them to the edit schedule selection activity
+     * if they press employee, take them to the edit employee selection activity
+     * if they press the announcement button take them to the announcement page
+     */
+    private void setOnClickListeners(){
         shiftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,10 +95,7 @@ public class EmployerAdminActivity extends AppCompatActivity {
 
             }
         });
-
-        navigation = findViewById(R.id.navigationEmployer);
     }
-
     /**
      * handle navigation menu choices
      */
@@ -134,6 +143,9 @@ public class EmployerAdminActivity extends AppCompatActivity {
         handleNavMenu();
     }
 
+    /**
+     * just handle the nav bar if resume I guess
+     */
     @Override
     protected void onResume(){
         super.onResume();

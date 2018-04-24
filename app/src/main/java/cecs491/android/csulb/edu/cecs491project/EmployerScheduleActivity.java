@@ -110,6 +110,26 @@ public class EmployerScheduleActivity extends AppCompatActivity {
     private void instantiateLayout(){
         displayedWeekTextView = findViewById(R.id.displayedWeekTextView);
         backButton = findViewById(R.id.backButton);
+        forwardButton = findViewById(R.id.forwardButton);
+
+        sundayTextView = findViewById(R.id.sundayTextView);
+        mondayTextView = findViewById(R.id.mondayTextView);
+        tuesdayTextView = findViewById(R.id.tuesdayTextView);
+        wednesdayTextView = findViewById(R.id.wednesdayTextView);
+        thursdayTextView = findViewById(R.id.thursdayTextView);
+        fridayTextView = findViewById(R.id.fridayTextView);
+        saturdayTextView = findViewById(R.id.saturdayTextView);
+        navigation = findViewById(R.id.navigation);
+
+        setOnClickListeners();
+    }
+
+    /**
+     * set the on click listeners
+     * if they press back, go back a week
+     * if they press forward, go forward a week
+     */
+    private void setOnClickListeners(){
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +141,6 @@ public class EmployerScheduleActivity extends AppCompatActivity {
                 instantiateValueEventListener();
             }
         });
-        forwardButton = findViewById(R.id.forwardButton);
         forwardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,16 +152,7 @@ public class EmployerScheduleActivity extends AppCompatActivity {
                 instantiateValueEventListener();
             }
         });
-        sundayTextView = findViewById(R.id.sundayTextView);
-        mondayTextView = findViewById(R.id.mondayTextView);
-        tuesdayTextView = findViewById(R.id.tuesdayTextView);
-        wednesdayTextView = findViewById(R.id.wednesdayTextView);
-        thursdayTextView = findViewById(R.id.thursdayTextView);
-        fridayTextView = findViewById(R.id.fridayTextView);
-        saturdayTextView = findViewById(R.id.saturdayTextView);
-        navigation = findViewById(R.id.navigation);
     }
-
     /**
      * handle what happens when the user clicks on the navigation menu
      */

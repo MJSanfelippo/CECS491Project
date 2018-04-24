@@ -39,6 +39,9 @@ public class EditScheduleSelection extends AppCompatActivity {
      */
     private Button editPageButton;
 
+    /**
+     * the back button
+     */
     private Button backButton;
 
     /**
@@ -46,14 +49,31 @@ public class EditScheduleSelection extends AppCompatActivity {
      */
     private BottomNavigationView navigation;
 
+    /**
+     * the firebase database
+     */
     private FirebaseDatabase db;
 
+    /**
+     * the database reference
+     */
     private DatabaseReference ref;
 
+    /**
+     * the value event listener to get schedule info
+     */
     private ValueEventListener valueEventListener;
 
+    /**
+     * list of users
+     */
     private List<User> userList;
 
+    /**
+     * creates a bundle based on user
+     * @param user the user to create the bundle from
+     * @return the bundle containing user info
+     */
     private Bundle getBundleFromUser(User user){
         Bundle b = new Bundle();
         b.putString("firstName", user.getFirstName());
@@ -63,10 +83,27 @@ public class EditScheduleSelection extends AppCompatActivity {
         b.putString("uid", user.getUid());
         return b;
     }
+
+    /**
+     * instantiate the layout components
+     */
     private void instantiateLayout() {
         selectEmployee = findViewById(R.id.selectEmployeeSchedule);
         employeeNameSpinner = findViewById(R.id.employeeNameSpinnerSchedule);
         backButton = findViewById(R.id.employeeSelectionBackButtonSchedule);
+        editPageButton = findViewById(R.id.toEditPageButtonSchedule);
+
+        navigation = findViewById(R.id.navigationEmployer);
+
+        setOnClickListeners();
+    }
+
+    /**
+     * sets the on click listeners
+     * if user clicks back, simply go back
+     * if user clicks go, send them to the edit page with correct user info
+     */
+    private void setOnClickListeners(){
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +111,6 @@ public class EditScheduleSelection extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        editPageButton = findViewById(R.id.toEditPageButtonSchedule);
         editPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,10 +121,12 @@ public class EditScheduleSelection extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-        navigation = findViewById(R.id.navigationEmployer);
     }
 
+    /**
+     * start the activity
+     * @param savedInstanceState the previous activity state
+      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +134,7 @@ public class EditScheduleSelection extends AppCompatActivity {
 
         instantiateLayout();
         instantiateFirebase();
+        addUsersToList();
         setEmployeeNames();
         handleNavMenu();
     }
@@ -128,19 +167,27 @@ public class EditScheduleSelection extends AppCompatActivity {
                     case R.id.navigation_announcements:
                         return true;
                     case R.id.navigation_admin:
-                        //intent = new Intent(EditEmployeeSelection.this, EmployerAdminActivity.class);
-                        //startActivity(intent);
+                        intent = new Intent(EditScheduleSelection.this, EmployerAdminActivity.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;
             }}
         );
     }
+
+    /**
+     * instantiate the firebase components
+     */
     private void instantiateFirebase(){
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("Users");
     }
 
+    /**
+     * get the user from the spinner, assume email is the same
+     * @return the user chosen, null otherwise (never though)
+     */
     private User getUserFromSpinner(){
         String userChosen = employeeNameSpinner.getSelectedItem().toString();
         String[] info = userChosen.split(" - ");
@@ -152,7 +199,27 @@ public class EditScheduleSelection extends AppCompatActivity {
         }
         return null;
     }
-    private void setEmployeeNames() {
+
+    /**
+     * set the employee names in the spinner
+     */
+    private void setEmployeeNames(){
+        List<String> spinnerArray = new ArrayList<>();
+        for (User user: userList){
+            String fullName = user.getFirstName() + " " + user.getLastName() + " - " + user.getEmail();
+            if (user.getDisabled().equalsIgnoreCase("false")) {
+                spinnerArray.add(fullName);
+            }
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditScheduleSelection.this, android.R.layout.simple_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        employeeNameSpinner.setAdapter(adapter);
+    }
+    /**
+     * get the users from the database and add to the list
+     */
+    private void addUsersToList() {
         userList = new ArrayList<User>();
         valueEventListener = new ValueEventListener() {
             @Override
@@ -173,17 +240,7 @@ public class EditScheduleSelection extends AppCompatActivity {
                     user.setPhoneNumber(phone);
                     userList.add(user);
                 }
-                List<String> spinnerArray = new ArrayList<>();
-                for (User user: userList){
-                    String fullName = user.getFirstName() + " " + user.getLastName() + " - " + user.getEmail();
-                    if (user.getDisabled().equalsIgnoreCase("false")) {
-                        spinnerArray.add(fullName);
-                    }
-                }
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditScheduleSelection.this, android.R.layout.simple_spinner_item, spinnerArray);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                employeeNameSpinner.setAdapter(adapter);
             }
 
             @Override
