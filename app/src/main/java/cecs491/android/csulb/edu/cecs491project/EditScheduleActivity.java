@@ -107,9 +107,6 @@ public class EditScheduleActivity extends AppCompatActivity {
     private ImageButton fridayEditButton;
     private ImageButton saturdayEditButton;
 
-    /**
-     * the buttons to add a shift if one doesn't exist
-     */
     private ImageButton sundayAddButton;
     private ImageButton mondayAddButton;
     private ImageButton tuesdayAddButton;
@@ -118,15 +115,8 @@ public class EditScheduleActivity extends AppCompatActivity {
     private ImageButton fridayAddButton;
     private ImageButton saturdayAddButton;
 
-    /**
-     * arrays to hold the edit and add buttons
-     */
     private ImageButton[] editButtonList;
     private ImageButton[] addButtonList;
-
-    /**
-     * array to hold days of the week
-     */
     private String[] daysOfWeek;
 
     /**
@@ -143,9 +133,29 @@ public class EditScheduleActivity extends AppCompatActivity {
         uid = b.getString("uid");
         displayedWeekTextView = findViewById(R.id.displayedWeekTextView);
         backButton = findViewById(R.id.backButton);
-
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String lastSunday = getLastSunday();
+                String lastSaturday = getLastSaturday();
+                displayedWeekTextView.setText(lastSunday + "  -  " + lastSaturday);
+                selectedSunday = lastSunday;
+                setSchedule();
+                instantiateValueEventListener();
+            }
+        });
         forwardButton = findViewById(R.id.forwardButton);
-
+        forwardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nextSunday = getNextSunday();
+                String nextSaturday = getNextSaturday();
+                displayedWeekTextView.setText(nextSunday + "  -  " + nextSaturday);
+                selectedSunday = nextSunday;
+                setSchedule();
+                instantiateValueEventListener();
+            }
+        });
         sundayTextView = findViewById(R.id.sundayTextView);
         mondayTextView = findViewById(R.id.mondayTextView);
         tuesdayTextView = findViewById(R.id.tuesdayTextView);
@@ -176,39 +186,6 @@ public class EditScheduleActivity extends AppCompatActivity {
         editButtonList = new ImageButton[]{sundayEditButton, mondayEditButton, tuesdayEditButton, wednesdayEditButton, thursdayEditButton, fridayEditButton, saturdayEditButton};
         addButtonList = new ImageButton[]{sundayAddButton, mondayAddButton, tuesdayAddButton, wednesdayAddButton, thursdayAddButton, fridayAddButton, saturdayAddButton};
 
-        setOnClickListeners();
-
-    }
-
-    /**
-     * sets the on click listeners
-     * the only tricky thing here is the edit and add buttons
-     * basically loop 7 times and on click, fire off an intent and include the dates, uid, and day of week depending on what day they choose
-     */
-    private void setOnClickListeners(){
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String lastSunday = getLastSunday();
-                String lastSaturday = getLastSaturday();
-                displayedWeekTextView.setText(lastSunday + "  -  " + lastSaturday);
-                selectedSunday = lastSunday;
-                setSchedule();
-                instantiateValueEventListener();
-            }
-        });
-
-        forwardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nextSunday = getNextSunday();
-                String nextSaturday = getNextSaturday();
-                displayedWeekTextView.setText(nextSunday + "  -  " + nextSaturday);
-                selectedSunday = nextSunday;
-                setSchedule();
-                instantiateValueEventListener();
-            }
-        });
         for (int i=0; i<7; i++){
             final int localI = i;
             editButtonList[i].setOnClickListener(new View.OnClickListener() {
@@ -240,11 +217,6 @@ public class EditScheduleActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * gets the pretty date which is MM/dd/YYYY
-     * @param day the day of week to get the date of
-     * @return the date
-     */
     private String getPrettyDate(int day){
         calendar.add(Calendar.DAY_OF_YEAR, day-6);
         String date = dayOfWeek.format(calendar.getTime());
@@ -252,11 +224,6 @@ public class EditScheduleActivity extends AppCompatActivity {
         return date;
     }
 
-    /**
-     * gets the real date in form MMddYYYY
-     * @param day the day of the week
-     * @return the date in form MMddYYYY
-     */
     private String getRealDate(int day){
         calendar.add(Calendar.DAY_OF_YEAR, day-6);
         String date = sdf.format(calendar.getTime());
@@ -264,9 +231,6 @@ public class EditScheduleActivity extends AppCompatActivity {
         return date;
     }
 
-    /**
-     * handle what happens when the user clicks stuff in the nav bar
-     */
     private void handleNavMenu(){
         Menu menu = navigation.getMenu();
         MenuItem item = menu.getItem(4);
@@ -459,7 +423,6 @@ public class EditScheduleActivity extends AppCompatActivity {
     /**
      * instantiate the value event listener to get all schedule time for a given week
      * for the current user and attach it to the corresponding text view
-     * also sets the visibility for each button
      */
     private void instantiateValueEventListener(){
         valueEventListener = new ValueEventListener() {
@@ -486,13 +449,6 @@ public class EditScheduleActivity extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(valueEventListener);
     }
 
-    /**
-     * if there is a shift, set the add button to be invisible and the edit button to be visible
-     * othewrwise do the opposite
-     * @param hasShift if a shift exists
-     * @param editButton the edit button
-     * @param addButton the add button
-     */
     private void setVisibility(boolean hasShift, ImageButton editButton, ImageButton addButton){
         if (hasShift){
             addButton.setVisibility(View.INVISIBLE);
@@ -503,9 +459,6 @@ public class EditScheduleActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * I forget why I need this but yeah
-     */
     @Override
     protected void onResume(){
         super.onResume();

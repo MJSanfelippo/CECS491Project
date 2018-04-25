@@ -89,16 +89,6 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         clockInButton = findViewById(R.id.toggleClockButton);
         todaysShift = findViewById(R.id.DailyShift);
         breakButton = findViewById(R.id.breakButton);
-
-        setOnClickListeners();
-    }
-
-    /**
-     * set the on click listeners
-     * if they click on clock in, set its text to clock out and enable the break button
-     * if they click on start break, set its text to end break and disable the clock out button
-     */
-    private void setOnClickListeners(){
         clockInButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -122,30 +112,20 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
                 }
             }
         });
-
         breakButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked){
-                    breakButton.setTextOn("Stop break");
-                    clockInButton.setEnabled(false);
-                    String timestamp = new SimpleDateFormat("HH:mm").format(new Date());
-                    DatabaseReference shiftRef = ref.child(possibleShiftId);
-                    Map<String, Object> shiftUpdate = new HashMap<>();
-                    shiftUpdate.put("Start Break Time", timestamp);
-                    shiftRef.updateChildren(shiftUpdate);
-                } else {
-                    breakButton.setTextOff("Start break");
+                    breakButton.setTextOn("Start break");
                     clockInButton.setEnabled(true);
-                    String timestamp = new SimpleDateFormat("HH:mm").format(new Date());
-                    DatabaseReference shiftRef = ref.child(possibleShiftId);
-                    Map<String, Object> shiftUpdate = new HashMap<>();
-                    shiftUpdate.put("End Break Time", timestamp);
-                    shiftRef.updateChildren(shiftUpdate);
+                } else {
+                    breakButton.setTextOff("Stop break");
+                    clockInButton.setEnabled(false);
                 }
             }
         });
     }
+
     /**
      * instantiate all the firebase componenets
      */
@@ -240,9 +220,6 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         handleNavMenu();
     }
 
-    /**
-     * why did I need this again?
-     */
     @Override
     protected void onResume(){
         super.onResume();

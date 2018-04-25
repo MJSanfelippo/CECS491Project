@@ -142,31 +142,21 @@ public class LogInActivity extends AppCompatActivity{
     private void instantiateLayout(){
         progressDialog = new ProgressDialog(this);
         buttonSignIn = findViewById(R.id.buttonSignIn);
-        buttonSignUp = findViewById(R.id.buttonSignUp);
-        editTextEmail = findViewById(R.id.editTextEmail);
-        editTextPassword = findViewById(R.id.editTextPassword);
-
-        setOnClickListeners();
-    }
-
-    /**
-     * set on click listeners
-     * if they press sign up, send them to the sign up page
-     * if they press sign in, attempt to sign them in
-     */
-    private void setOnClickListeners(){
-        buttonSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToSignUpPage();
-            }
-        });
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signInUser();
             }
         });
+        buttonSignUp = findViewById(R.id.buttonSignUp);
+        buttonSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToSignUpPage();
+            }
+        });
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
     }
 
     /**

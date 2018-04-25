@@ -94,16 +94,6 @@ public class EmployerProfileActivity extends AppCompatActivity {
         emailTextView =findViewById(R.id.employerProfileEmail);
         phoneTextView = findViewById(R.id.employerProfilePhone);
         signOutButton = findViewById(R.id.signOutButton);
-
-        navigation = findViewById(R.id.navigationEmployer);
-        setOnClickListeners();
-    }
-
-    /**
-     * set the on click listeners
-     * if they press sign out, sign them out and go back to login page
-     */
-    private void setOnClickListeners(){
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,7 +102,9 @@ public class EmployerProfileActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        navigation = findViewById(R.id.navigationEmployer);
     }
+
     /**
      * instantiate all firebase components
      */

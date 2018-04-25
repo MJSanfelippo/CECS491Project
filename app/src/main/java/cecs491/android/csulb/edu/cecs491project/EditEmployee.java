@@ -35,72 +35,40 @@ public class EditEmployee extends AppCompatActivity {
     private EditText editTextLastName;
 
     /**
+     * the email address edit text reference
+     */
+    private EditText editTextEmailAddress;
+
+    /**
      * the phone number edit text reference
      */
     private EditText editTextPhoneNumber;
 
-    /**
-     * the instance of the firebase db
-     */
     private FirebaseDatabase db;
 
-    /**
-     * the database reference
-     */
     private DatabaseReference ref;
     /**
      * button to submit edits reference
      */
     private Button saveButton;
 
-    /**
-     * the button to cancel editing an employee
-     */
     private Button cancelButton;
-
-    /**
-     * the button to disable an employee
-     */
 
     private Button disableButton;
 
-    /**
-     * the value event listener to get employee info
-     */
     private ValueEventListener valueEventListener;
     /**
      * the navigation bar
      */
     private BottomNavigationView navigation;
 
-    /**
-     * the user's first name
-     */
-    private String firstName;
+    private String email, firstName, lastName, phone, uid;
 
-    /**
-     * the user's last name
-     */
-    private String lastName;
 
-    /**
-     * the user's phone
-     */
-    private String phone;
-
-    /**
-     * the user's uid
-     */
-    private String uid;
-
-    /**
-     * instantiate the firebase components to users
-     */
     private void instantiateFirebase(){
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("Users");
     }
-
     /**
      * handle navigation menu choices
      */
@@ -136,44 +104,32 @@ public class EditEmployee extends AppCompatActivity {
             }}
         );
     }
-
-    /**
-     * instantiate the layouts
-     */
     private void instantiateLayout() {
         editTextFirstName = findViewById(R.id.editTextFirstName);
         editTextFirstName.setText(firstName);
         editTextLastName = findViewById(R.id.editTextLastName);
         editTextLastName.setText(lastName);
+        editTextEmailAddress = findViewById(R.id.editTextEmailAddress);
+        editTextEmailAddress.setText(email);
         editTextPhoneNumber = findViewById(R.id.editTextPhoneNumber);
         editTextPhoneNumber.setText(phone);
 
         navigation = findViewById(R.id.navigationEmployer);
 
         saveButton = findViewById(R.id.saveButton);
-        disableButton = findViewById(R.id.disableButton);
-        cancelButton = findViewById(R.id.cancelButton);
-
-        setOnClickListeners();
-    }
-
-    /**
-     * sets the on click listeners
-     * if they save, update the info and update the database
-     * if they disable, then update the user to be disabled
-     * if they cancel, go back
-     */
-    private void setOnClickListeners(){
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 DatabaseReference userRef = ref.child(uid);
                 Map<String, Object> userUpdate = new HashMap<>();
                 String firstName = editTextFirstName.getText().toString();
                 String lastName = editTextLastName.getText().toString();
+                String email = editTextEmailAddress.getText().toString();
                 String phone = editTextPhoneNumber.getText().toString();
                 userUpdate.put("First Name", firstName);
                 userUpdate.put("Last Name", lastName);
+                userUpdate.put("Email", email);
                 userUpdate.put("Phone", phone);
                 userRef.updateChildren(userUpdate);
                 Toast.makeText(EditEmployee.this, "Employee saved", Toast.LENGTH_LONG).show();
@@ -181,7 +137,7 @@ public class EditEmployee extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+        disableButton = findViewById(R.id.disableButton);
         disableButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +150,7 @@ public class EditEmployee extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
+        cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,26 +160,19 @@ public class EditEmployee extends AppCompatActivity {
         });
     }
 
-    /**
-     * gets the user info from previous intent
-     */
-    private void getInfo(){
-        Bundle b = getIntent().getExtras();
-        firstName = b.getString("firstName");
-        lastName = b.getString("lastName");
-        phone = b.getString("phone");
-        uid = b.getString("uid");
-    }
-    /**
-     * creates the activity
-     * @param savedInstanceState the state before this activity
-     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_employee);
 
-        getInfo();
+        Bundle b = getIntent().getExtras();
+        email = b.getString("email");
+        firstName = b.getString("firstName");
+        lastName = b.getString("lastName");
+        phone = b.getString("phone");
+        uid = b.getString("uid");
+
         instantiateLayout();
         handleNavMenu();
         instantiateFirebase();
