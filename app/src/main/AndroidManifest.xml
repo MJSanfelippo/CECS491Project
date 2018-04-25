@@ -33,7 +33,6 @@
         <activity android:name=".EditScheduleActivity" />
         <activity android:name=".EditEmployeeShift" />
         <activity android:name=".AddShift" />
-        <activity android:name=".PostAnnouncementActivity" />
     </application>
 
 </manifest>
