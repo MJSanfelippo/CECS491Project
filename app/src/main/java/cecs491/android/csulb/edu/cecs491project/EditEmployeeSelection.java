@@ -135,7 +135,6 @@ public class EditEmployeeSelection extends AppCompatActivity {
         instantiateLayout();
         instantiateFirebase();
         addUsersToList();
-        setEmployeeNames();
         handleNavMenu();
     }
 
@@ -238,6 +237,7 @@ public class EditEmployeeSelection extends AppCompatActivity {
                     user.setPhoneNumber(phone);
                     userList.add(user);
                 }
+                setEmployeeNames();
             }
 
             @Override

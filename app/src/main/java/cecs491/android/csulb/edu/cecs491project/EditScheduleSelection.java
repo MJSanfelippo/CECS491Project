@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -135,7 +136,6 @@ public class EditScheduleSelection extends AppCompatActivity {
         instantiateLayout();
         instantiateFirebase();
         addUsersToList();
-        setEmployeeNames();
         handleNavMenu();
     }
 
@@ -211,7 +211,6 @@ public class EditScheduleSelection extends AppCompatActivity {
                 spinnerArray.add(fullName);
             }
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditScheduleSelection.this, android.R.layout.simple_spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         employeeNameSpinner.setAdapter(adapter);
@@ -240,14 +239,12 @@ public class EditScheduleSelection extends AppCompatActivity {
                     user.setPhoneNumber(phone);
                     userList.add(user);
                 }
-
+                setEmployeeNames();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         };
-
         ref.addListenerForSingleValueEvent(valueEventListener);
     }
 }
