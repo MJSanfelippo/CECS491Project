@@ -286,6 +286,7 @@ public class EditScheduleActivity extends AppCompatActivity {
                         return true;
                     case R.id.navigation_schedule:
                         intent = new Intent(EditScheduleActivity.this, EmployerScheduleActivity.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
                         return true;
