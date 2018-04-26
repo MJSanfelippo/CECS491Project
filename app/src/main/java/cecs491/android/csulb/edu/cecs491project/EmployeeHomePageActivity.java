@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,8 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
      */
     private TextView todaysShift;
 
+    private TextView announcementTextView;
+
     /**
      * firebase database
      */
@@ -65,7 +68,10 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
      * reference to the database
      */
     private DatabaseReference ref;
-
+    /**
+     * the database reference for the announcement.
+     */
+    private DatabaseReference announcementRef;
     /**
      * possible shift id will be in the form of [user id]@[date]
      */
@@ -89,6 +95,7 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         clockInButton = findViewById(R.id.toggleClockButton);
         todaysShift = findViewById(R.id.DailyShift);
         breakButton = findViewById(R.id.breakButton);
+        announcementTextView = findViewById(R.id.Announcement_Display);
         clockInButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -133,6 +140,7 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("Shifts");
+        announcementRef = db.getReference("Announcements");
     }
 
     /**
@@ -205,6 +213,39 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         );
     }
     /**
+     * Method that retrieves all the announcement in the database and store it in an arrayList.
+     */
+    private void getAllAnnouncements() {
+        announcementRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()){
+                    ArrayList<Announcement> announcementList = new ArrayList<>();
+                    for(DataSnapshot ds: dataSnapshot.getChildren()) {
+                        Announcement ann = ds.getValue(Announcement.class);
+                        announcementList.add(ann);
+                    }
+                    setLatestAnnouncement(announcementList);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+    /**
+     * Method that sets the latest announcement into the announcement text view field..
+     * @param announcement
+     */
+    private void setLatestAnnouncement(ArrayList<Announcement> announcement) {
+        int lastAnnouncement = announcement.size() - 1;
+        Announcement ann = announcement.get(lastAnnouncement);
+        if(ann.getMessage().length() > 0 ) {
+            announcementTextView.setText(ann.getMessage() + "\n\n" +
+                    "Posted by: " + ann.getPostedBy() + "\n" + "Posted on: " + ann.getTimestamp());
+        }
+    }
+
+    /**
      * instantiate all components of the activity
      * @param savedInstanceState the saved instance state
      */
@@ -218,6 +259,7 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
         getPossibleShiftId();
         instantiateValueEventListener();
         handleNavMenu();
+        getAllAnnouncements();
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -96,7 +97,8 @@ public class EditScheduleSelection extends AppCompatActivity {
 
         instantiateLayout();
         instantiateFirebase();
-        setEmployeeNames();
+
+        addUsersToList();
         handleNavMenu();
     }
 
@@ -152,7 +154,26 @@ public class EditScheduleSelection extends AppCompatActivity {
         }
         return null;
     }
-    private void setEmployeeNames() {
+
+    /**
+     * set the employee names in the spinner
+     */
+    private void setEmployeeNames(){
+        List<String> spinnerArray = new ArrayList<>();
+        for (User user: userList){
+            String fullName = user.getFirstName() + " " + user.getLastName() + " - " + user.getEmail();
+            if (user.getDisabled().equalsIgnoreCase("false")) {
+                spinnerArray.add(fullName);
+            }
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditScheduleSelection.this, android.R.layout.simple_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        employeeNameSpinner.setAdapter(adapter);
+    }
+    /**
+     * get the users from the database and add to the list
+     */
+    private void addUsersToList() {
         userList = new ArrayList<User>();
         valueEventListener = new ValueEventListener() {
             @Override
@@ -173,24 +194,12 @@ public class EditScheduleSelection extends AppCompatActivity {
                     user.setPhoneNumber(phone);
                     userList.add(user);
                 }
-                List<String> spinnerArray = new ArrayList<>();
-                for (User user: userList){
-                    String fullName = user.getFirstName() + " " + user.getLastName() + " - " + user.getEmail();
-                    if (user.getDisabled().equalsIgnoreCase("false")) {
-                        spinnerArray.add(fullName);
-                    }
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditScheduleSelection.this, android.R.layout.simple_spinner_item, spinnerArray);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                employeeNameSpinner.setAdapter(adapter);
+                setEmployeeNames();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         };
-
         ref.addListenerForSingleValueEvent(valueEventListener);
     }
 }

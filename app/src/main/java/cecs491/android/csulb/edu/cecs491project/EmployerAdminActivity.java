@@ -80,7 +80,8 @@ public class EmployerAdminActivity extends AppCompatActivity {
         announcementsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(EmployerAdminActivity.this, PostAnnouncementActivity.class);
+                startActivity(i);
             }
         });
 

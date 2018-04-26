@@ -43,6 +43,8 @@
         android:layout_marginTop="8dp"
         android:text="BCK"
         android:textSize="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/displayedWeekTextView"
         app:layout_constraintEnd_toStartOf="@+id/displayedWeekTextView"
         app:layout_constraintHorizontal_bias="0.0"
@@ -62,6 +64,8 @@
         android:layout_marginStart="8dp"
         android:text="FWD"
         android:textSize="20dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/displayedWeekTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -93,13 +97,14 @@
 
     <ImageButton
         android:id="@+id/mondayAdd"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
         android:src="@drawable/add"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/mondayTextView"
         app:layout_constraintRight_toRightOf="@+id/mondayTextView"
-        app:layout_constraintTop_toTopOf="@+id/mondayTextView"
-        app:layout_constraintBottom_toBottomOf="@+id/mondayTextView"/>
+        app:layout_constraintTop_toTopOf="@+id/mondayTextView" />
 
     <TextView
         android:id="@+id/tuesdayTextView"
@@ -114,6 +119,7 @@
     <ImageButton
         android:id="@+id/tuesdayAdd"
         android:layout_width="wrap_content"
+        android:layout_marginRight="30dp"
         android:layout_height="wrap_content"
         android:src="@drawable/add"
         android:visibility="invisible"
@@ -123,6 +129,7 @@
 
     <ImageButton
         android:id="@+id/wednesdayAdd"
+        android:layout_marginRight="30dp"
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -136,6 +143,7 @@
         android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
         android:src="@drawable/add"
         app:layout_constraintRight_toRightOf="@+id/thursdayTextView"
         app:layout_constraintTop_toTopOf="@+id/thursdayTextView"
@@ -144,6 +152,7 @@
     <ImageButton
         android:id="@+id/fridayAdd"
         android:layout_width="wrap_content"
+        android:layout_marginRight="30dp"
         android:visibility="invisible"
         android:layout_height="wrap_content"
         android:src="@drawable/add"
@@ -153,6 +162,7 @@
 
     <ImageButton
         android:id="@+id/saturdayAdd"
+        android:layout_marginRight="30dp"
         android:layout_width="wrap_content"
         android:visibility="invisible"
         android:layout_height="wrap_content"
@@ -202,13 +212,14 @@
 
     <ImageButton
         android:id="@+id/sundayAdd"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
         android:src="@drawable/add"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/sundayTextView"
         app:layout_constraintRight_toRightOf="@+id/sundayTextView"
-        app:layout_constraintTop_toTopOf="@+id/sundayTextView"
-        app:layout_constraintBottom_toBottomOf="@+id/sundayTextView"/>
+        app:layout_constraintTop_toTopOf="@+id/sundayTextView" />
 
     <ImageButton
         android:id="@+id/sunEdit"

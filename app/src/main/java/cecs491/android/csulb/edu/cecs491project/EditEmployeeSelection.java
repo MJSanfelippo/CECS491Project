@@ -39,6 +39,9 @@ public class EditEmployeeSelection extends AppCompatActivity {
      */
     private Button editPageButton;
 
+    /**
+     * button to go back
+     */
     private Button backButton;
 
     /**
@@ -46,14 +49,31 @@ public class EditEmployeeSelection extends AppCompatActivity {
      */
     private BottomNavigationView navigation;
 
+    /**
+     * instance of the firebase database
+     */
     private FirebaseDatabase db;
 
+    /**
+     * the database reference
+     */
     private DatabaseReference ref;
 
+    /**
+     * the value event listener to get the user info
+     */
     private ValueEventListener valueEventListener;
 
+    /**
+     * list to hold all users
+     */
     private List<User> userList;
 
+    /**
+     * create a bundle based on the user
+     * @param user the user to be used in creating the bundle
+     * @return the bundle made from the user
+     */
     private Bundle getBundleFromUser(User user){
         Bundle b = new Bundle();
         b.putString("firstName", user.getFirstName());
@@ -63,10 +83,27 @@ public class EditEmployeeSelection extends AppCompatActivity {
         b.putString("uid", user.getUid());
         return b;
     }
+
+    /**
+     *
+     */
     private void instantiateLayout() {
         selectEmployee = findViewById(R.id.selectEmployee);
         employeeNameSpinner = findViewById(R.id.employeeNameSpinner);
         backButton = findViewById(R.id.employeeSelectionBackButton);
+        editPageButton = findViewById(R.id.toEditPageButton);
+
+        navigation = findViewById(R.id.navigationEmployer);
+
+        setOnClickListeners();
+    }
+
+    /**
+     * set the on click listeners
+     * if they go back, just go back
+     * if they click go, take them to the edit page and send in user info
+     */
+    private void setOnClickListeners(){
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +111,6 @@ public class EditEmployeeSelection extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        editPageButton = findViewById(R.id.toEditPageButton);
         editPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,10 +121,12 @@ public class EditEmployeeSelection extends AppCompatActivity {
                 startActivity(i);
             }
         });
-
-        navigation = findViewById(R.id.navigationEmployer);
     }
 
+    /**
+     * start the activity
+     * @param savedInstanceState the previous activity's state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,10 +134,9 @@ public class EditEmployeeSelection extends AppCompatActivity {
 
         instantiateLayout();
         instantiateFirebase();
-        setEmployeeNames();
+        addUsersToList();
         handleNavMenu();
     }
-
 
     /**
      * handle navigation menu choices
@@ -136,11 +173,19 @@ public class EditEmployeeSelection extends AppCompatActivity {
             }}
         );
     }
+
+    /**
+     * instantiate the firebase components to users
+     */
     private void instantiateFirebase(){
         db = FirebaseDatabase.getInstance();
         ref = db.getReference("Users");
     }
 
+    /**
+     * get the user from the spinner, assume email is the same
+     * @return the user whose email matches the one in the dropdown, null otherwise (should never return null, honestly)
+     */
     private User getUserFromSpinner(){
         String userChosen = employeeNameSpinner.getSelectedItem().toString();
         String[] info = userChosen.split(" - ");
@@ -152,12 +197,31 @@ public class EditEmployeeSelection extends AppCompatActivity {
         }
         return null;
     }
-    private void setEmployeeNames() {
+
+    /**
+     * set the employee names in the dropdown
+     */
+    private void setEmployeeNames(){
+        List<String> spinnerArray = new ArrayList<>();
+        for (User user: userList){
+            String fullName = user.getFirstName() + " " + user.getLastName() + " - " + user.getEmail();
+            if (user.getDisabled().equalsIgnoreCase("false")) {
+                spinnerArray.add(fullName);
+            }
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditEmployeeSelection.this, android.R.layout.simple_spinner_item, spinnerArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        employeeNameSpinner.setAdapter(adapter);
+    }
+    /**
+     * get all users from database and add to the list
+     */
+    private void addUsersToList() {
         userList = new ArrayList<User>();
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot s: dataSnapshot.getChildren()){
+                for (DataSnapshot s: dataSnapshot.getChildren()) {
                     User user = new User();
                     String uid = s.getKey();
                     user.setUid(uid);
@@ -173,17 +237,7 @@ public class EditEmployeeSelection extends AppCompatActivity {
                     user.setPhoneNumber(phone);
                     userList.add(user);
                 }
-                List<String> spinnerArray = new ArrayList<>();
-                for (User user: userList){
-                    String fullName = user.getFirstName() + " " + user.getLastName() + " - " + user.getEmail();
-                    if (user.getDisabled().equalsIgnoreCase("false")) {
-                        spinnerArray.add(fullName);
-                    }
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditEmployeeSelection.this, android.R.layout.simple_spinner_item, spinnerArray);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                employeeNameSpinner.setAdapter(adapter);
+                setEmployeeNames();
             }
 
             @Override
