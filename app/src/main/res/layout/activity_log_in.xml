@@ -33,6 +33,8 @@
             android:layout_margin="15dp"
             android:id="@+id/buttonSignIn"
             android:text="Sign In"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -40,6 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
             android:text="Sign up"
             android:id="@+id/buttonSignUp"/>
 

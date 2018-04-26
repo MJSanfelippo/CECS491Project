@@ -65,6 +65,8 @@
             android:layout_margin="20dp"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
             android:textSize="20dp"
             />
 
@@ -74,6 +76,8 @@
             android:layout_width="match_parent"
             android:text="Cancel"
             android:layout_margin="20dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
             android:textSize="20dp"
             />
 

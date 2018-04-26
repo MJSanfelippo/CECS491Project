@@ -78,6 +78,8 @@
         android:id="@+id/newUserSubmitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
         android:text="Submit" />
 
 </LinearLayout>
