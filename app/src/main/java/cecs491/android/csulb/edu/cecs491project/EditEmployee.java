@@ -94,6 +94,8 @@ public class EditEmployee extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
+                        intent = new Intent(EditEmployee.this, EmployerViewAnnouncements.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_admin:
                         intent = new Intent(EditEmployee.this, EmployerAdminActivity.class);

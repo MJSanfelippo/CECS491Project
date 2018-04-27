@@ -146,6 +146,8 @@ public class PostAnnouncementActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
+                        intent = new Intent(PostAnnouncementActivity.this, EmployerViewAnnouncements.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_admin:
                         intent = new Intent(PostAnnouncementActivity.this, EmployerAdminActivity.class);

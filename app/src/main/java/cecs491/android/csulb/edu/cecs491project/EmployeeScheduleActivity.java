@@ -162,6 +162,8 @@ public class EmployeeScheduleActivity extends AppCompatActivity {
                     case R.id.navigation_schedule:
                         return true;
                     case R.id.navigation_announcements:
+                        intent = new Intent(EmployeeScheduleActivity.this, EmployeeViewAnnouncements.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;

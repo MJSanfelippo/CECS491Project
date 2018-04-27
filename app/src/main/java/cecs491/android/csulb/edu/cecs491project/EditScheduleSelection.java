@@ -128,6 +128,8 @@ public class EditScheduleSelection extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
+                        intent = new Intent(EditScheduleSelection.this, EmployerViewAnnouncements.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_admin:
                         intent = new Intent(EditScheduleSelection.this, EmployerAdminActivity.class);

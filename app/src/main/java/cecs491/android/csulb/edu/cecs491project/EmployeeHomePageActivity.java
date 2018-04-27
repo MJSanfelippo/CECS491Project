@@ -206,6 +206,8 @@ public class EmployeeHomePageActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
+                        intent = new Intent(EmployeeHomePageActivity.this, EmployeeViewAnnouncements.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;

@@ -208,6 +208,8 @@ public class EmployerHomePageActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
+                        intent = new Intent(EmployerHomePageActivity.this, EmployerViewAnnouncements.class);
+                        startActivity(intent);
                         return true;
                     case R.id.navigation_admin:
                         intent = new Intent(EmployerHomePageActivity.this, EmployerAdminActivity.class);

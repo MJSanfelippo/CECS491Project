@@ -34,6 +34,8 @@
         <activity android:name=".EditEmployeeShift" />
         <activity android:name=".AddShift" />
         <activity android:name=".PostAnnouncementActivity" />
+        <activity android:name=".EmployerViewAnnouncements"/>
+        <activity android:name=".EmployeeViewAnnouncements"/>
     </application>
 
 </manifest>

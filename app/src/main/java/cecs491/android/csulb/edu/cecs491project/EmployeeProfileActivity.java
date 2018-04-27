@@ -160,6 +160,8 @@ public class EmployeeProfileActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     case R.id.navigation_announcements:
+                        intent = new Intent(EmployeeProfileActivity.this, EmployeeViewAnnouncements.class);
+                        startActivity(intent);
                         return true;
                 }
                 return false;
